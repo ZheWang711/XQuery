@@ -16,7 +16,7 @@ hs_err_pid*
 *.iml
 
 #library
-lib
+
 
 # Personal files
 my-*
