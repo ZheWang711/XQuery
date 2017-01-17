@@ -14,3 +14,12 @@ hs_err_pid*
 # IntelliJ files
 .idea*
 *.iml
+
+#library
+lib
+
+# Personal files
+my-*
+
+# build targets
+target
