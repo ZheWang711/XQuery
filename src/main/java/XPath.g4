@@ -1,6 +1,6 @@
 grammar XPath;
 
-abs_path : 'doc(' FILENAME ')' SLASH  re_path  #abs_slash
+abs_path : 'doc("' FILENAME '")' SLASH  re_path  #abs_slash
          | 'doc(' FILENAME ')' DOUBLESLASH re_path #abs_db_slash
          ;
 

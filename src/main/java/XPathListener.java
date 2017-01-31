@@ -1,4 +1,5 @@
-// Generated from XPath.g4 by ANTLR 4.5.3
+// Generated from XPath.g4 by ANTLR 4.3
+import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -11,239 +12,258 @@ public interface XPathListener extends ParseTreeListener {
 	 * labeled alternative in {@link XPathParser#abs_path}.
 	 * @param ctx the parse tree
 	 */
-	void enterAbs_slash(XPathParser.Abs_slashContext ctx);
+	void enterAbs_slash(@NotNull XPathParser.Abs_slashContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code abs_slash}
 	 * labeled alternative in {@link XPathParser#abs_path}.
 	 * @param ctx the parse tree
 	 */
-	void exitAbs_slash(XPathParser.Abs_slashContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code abs_db_slash}
-	 * labeled alternative in {@link XPathParser#abs_path}.
-	 * @param ctx the parse tree
-	 */
-	void enterAbs_db_slash(XPathParser.Abs_db_slashContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code abs_db_slash}
-	 * labeled alternative in {@link XPathParser#abs_path}.
-	 * @param ctx the parse tree
-	 */
-	void exitAbs_db_slash(XPathParser.Abs_db_slashContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code concatenate}
-	 * labeled alternative in {@link XPathParser#re_path}.
-	 * @param ctx the parse tree
-	 */
-	void enterConcatenate(XPathParser.ConcatenateContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code concatenate}
-	 * labeled alternative in {@link XPathParser#re_path}.
-	 * @param ctx the parse tree
-	 */
-	void exitConcatenate(XPathParser.ConcatenateContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code double_dot}
-	 * labeled alternative in {@link XPathParser#re_path}.
-	 * @param ctx the parse tree
-	 */
-	void enterDouble_dot(XPathParser.Double_dotContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code double_dot}
-	 * labeled alternative in {@link XPathParser#re_path}.
-	 * @param ctx the parse tree
-	 */
-	void exitDouble_dot(XPathParser.Double_dotContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code dot}
-	 * labeled alternative in {@link XPathParser#re_path}.
-	 * @param ctx the parse tree
-	 */
-	void enterDot(XPathParser.DotContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code dot}
-	 * labeled alternative in {@link XPathParser#re_path}.
-	 * @param ctx the parse tree
-	 */
-	void exitDot(XPathParser.DotContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code re_db_slash}
-	 * labeled alternative in {@link XPathParser#re_path}.
-	 * @param ctx the parse tree
-	 */
-	void enterRe_db_slash(XPathParser.Re_db_slashContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code re_db_slash}
-	 * labeled alternative in {@link XPathParser#re_path}.
-	 * @param ctx the parse tree
-	 */
-	void exitRe_db_slash(XPathParser.Re_db_slashContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code tag}
-	 * labeled alternative in {@link XPathParser#re_path}.
-	 * @param ctx the parse tree
-	 */
-	void enterTag(XPathParser.TagContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code tag}
-	 * labeled alternative in {@link XPathParser#re_path}.
-	 * @param ctx the parse tree
-	 */
-	void exitTag(XPathParser.TagContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code text}
-	 * labeled alternative in {@link XPathParser#re_path}.
-	 * @param ctx the parse tree
-	 */
-	void enterText(XPathParser.TextContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code text}
-	 * labeled alternative in {@link XPathParser#re_path}.
-	 * @param ctx the parse tree
-	 */
-	void exitText(XPathParser.TextContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code re_expr}
-	 * labeled alternative in {@link XPathParser#re_path}.
-	 * @param ctx the parse tree
-	 */
-	void enterRe_expr(XPathParser.Re_exprContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code re_expr}
-	 * labeled alternative in {@link XPathParser#re_path}.
-	 * @param ctx the parse tree
-	 */
-	void exitRe_expr(XPathParser.Re_exprContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code att_name}
-	 * labeled alternative in {@link XPathParser#re_path}.
-	 * @param ctx the parse tree
-	 */
-	void enterAtt_name(XPathParser.Att_nameContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code att_name}
-	 * labeled alternative in {@link XPathParser#re_path}.
-	 * @param ctx the parse tree
-	 */
-	void exitAtt_name(XPathParser.Att_nameContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code re_filter}
-	 * labeled alternative in {@link XPathParser#re_path}.
-	 * @param ctx the parse tree
-	 */
-	void enterRe_filter(XPathParser.Re_filterContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code re_filter}
-	 * labeled alternative in {@link XPathParser#re_path}.
-	 * @param ctx the parse tree
-	 */
-	void exitRe_filter(XPathParser.Re_filterContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code wildcard}
-	 * labeled alternative in {@link XPathParser#re_path}.
-	 * @param ctx the parse tree
-	 */
-	void enterWildcard(XPathParser.WildcardContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code wildcard}
-	 * labeled alternative in {@link XPathParser#re_path}.
-	 * @param ctx the parse tree
-	 */
-	void exitWildcard(XPathParser.WildcardContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code re_slash}
-	 * labeled alternative in {@link XPathParser#re_path}.
-	 * @param ctx the parse tree
-	 */
-	void enterRe_slash(XPathParser.Re_slashContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code re_slash}
-	 * labeled alternative in {@link XPathParser#re_path}.
-	 * @param ctx the parse tree
-	 */
-	void exitRe_slash(XPathParser.Re_slashContext ctx);
+	void exitAbs_slash(@NotNull XPathParser.Abs_slashContext ctx);
+
 	/**
 	 * Enter a parse tree produced by the {@code filter_and}
 	 * labeled alternative in {@link XPathParser#filter}.
 	 * @param ctx the parse tree
 	 */
-	void enterFilter_and(XPathParser.Filter_andContext ctx);
+	void enterFilter_and(@NotNull XPathParser.Filter_andContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code filter_and}
 	 * labeled alternative in {@link XPathParser#filter}.
 	 * @param ctx the parse tree
 	 */
-	void exitFilter_and(XPathParser.Filter_andContext ctx);
+	void exitFilter_and(@NotNull XPathParser.Filter_andContext ctx);
+
+	/**
+	 * Enter a parse tree produced by the {@code concatenate}
+	 * labeled alternative in {@link XPathParser#re_path}.
+	 * @param ctx the parse tree
+	 */
+	void enterConcatenate(@NotNull XPathParser.ConcatenateContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code concatenate}
+	 * labeled alternative in {@link XPathParser#re_path}.
+	 * @param ctx the parse tree
+	 */
+	void exitConcatenate(@NotNull XPathParser.ConcatenateContext ctx);
+
 	/**
 	 * Enter a parse tree produced by the {@code filter_eq}
 	 * labeled alternative in {@link XPathParser#filter}.
 	 * @param ctx the parse tree
 	 */
-	void enterFilter_eq(XPathParser.Filter_eqContext ctx);
+	void enterFilter_eq(@NotNull XPathParser.Filter_eqContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code filter_eq}
 	 * labeled alternative in {@link XPathParser#filter}.
 	 * @param ctx the parse tree
 	 */
-	void exitFilter_eq(XPathParser.Filter_eqContext ctx);
+	void exitFilter_eq(@NotNull XPathParser.Filter_eqContext ctx);
+
 	/**
 	 * Enter a parse tree produced by the {@code id_eq}
 	 * labeled alternative in {@link XPathParser#filter}.
 	 * @param ctx the parse tree
 	 */
-	void enterId_eq(XPathParser.Id_eqContext ctx);
+	void enterId_eq(@NotNull XPathParser.Id_eqContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code id_eq}
 	 * labeled alternative in {@link XPathParser#filter}.
 	 * @param ctx the parse tree
 	 */
-	void exitId_eq(XPathParser.Id_eqContext ctx);
+	void exitId_eq(@NotNull XPathParser.Id_eqContext ctx);
+
+	/**
+	 * Enter a parse tree produced by the {@code dot}
+	 * labeled alternative in {@link XPathParser#re_path}.
+	 * @param ctx the parse tree
+	 */
+	void enterDot(@NotNull XPathParser.DotContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code dot}
+	 * labeled alternative in {@link XPathParser#re_path}.
+	 * @param ctx the parse tree
+	 */
+	void exitDot(@NotNull XPathParser.DotContext ctx);
+
 	/**
 	 * Enter a parse tree produced by the {@code value_eq}
 	 * labeled alternative in {@link XPathParser#filter}.
 	 * @param ctx the parse tree
 	 */
-	void enterValue_eq(XPathParser.Value_eqContext ctx);
+	void enterValue_eq(@NotNull XPathParser.Value_eqContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code value_eq}
 	 * labeled alternative in {@link XPathParser#filter}.
 	 * @param ctx the parse tree
 	 */
-	void exitValue_eq(XPathParser.Value_eqContext ctx);
+	void exitValue_eq(@NotNull XPathParser.Value_eqContext ctx);
+
+	/**
+	 * Enter a parse tree produced by the {@code re_expr}
+	 * labeled alternative in {@link XPathParser#re_path}.
+	 * @param ctx the parse tree
+	 */
+	void enterRe_expr(@NotNull XPathParser.Re_exprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code re_expr}
+	 * labeled alternative in {@link XPathParser#re_path}.
+	 * @param ctx the parse tree
+	 */
+	void exitRe_expr(@NotNull XPathParser.Re_exprContext ctx);
+
+	/**
+	 * Enter a parse tree produced by the {@code att_name}
+	 * labeled alternative in {@link XPathParser#re_path}.
+	 * @param ctx the parse tree
+	 */
+	void enterAtt_name(@NotNull XPathParser.Att_nameContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code att_name}
+	 * labeled alternative in {@link XPathParser#re_path}.
+	 * @param ctx the parse tree
+	 */
+	void exitAtt_name(@NotNull XPathParser.Att_nameContext ctx);
+
+	/**
+	 * Enter a parse tree produced by the {@code re_filter}
+	 * labeled alternative in {@link XPathParser#re_path}.
+	 * @param ctx the parse tree
+	 */
+	void enterRe_filter(@NotNull XPathParser.Re_filterContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code re_filter}
+	 * labeled alternative in {@link XPathParser#re_path}.
+	 * @param ctx the parse tree
+	 */
+	void exitRe_filter(@NotNull XPathParser.Re_filterContext ctx);
+
 	/**
 	 * Enter a parse tree produced by the {@code filter_re}
 	 * labeled alternative in {@link XPathParser#filter}.
 	 * @param ctx the parse tree
 	 */
-	void enterFilter_re(XPathParser.Filter_reContext ctx);
+	void enterFilter_re(@NotNull XPathParser.Filter_reContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code filter_re}
 	 * labeled alternative in {@link XPathParser#filter}.
 	 * @param ctx the parse tree
 	 */
-	void exitFilter_re(XPathParser.Filter_reContext ctx);
+	void exitFilter_re(@NotNull XPathParser.Filter_reContext ctx);
+
+	/**
+	 * Enter a parse tree produced by the {@code wildcard}
+	 * labeled alternative in {@link XPathParser#re_path}.
+	 * @param ctx the parse tree
+	 */
+	void enterWildcard(@NotNull XPathParser.WildcardContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code wildcard}
+	 * labeled alternative in {@link XPathParser#re_path}.
+	 * @param ctx the parse tree
+	 */
+	void exitWildcard(@NotNull XPathParser.WildcardContext ctx);
+
+	/**
+	 * Enter a parse tree produced by the {@code re_slash}
+	 * labeled alternative in {@link XPathParser#re_path}.
+	 * @param ctx the parse tree
+	 */
+	void enterRe_slash(@NotNull XPathParser.Re_slashContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code re_slash}
+	 * labeled alternative in {@link XPathParser#re_path}.
+	 * @param ctx the parse tree
+	 */
+	void exitRe_slash(@NotNull XPathParser.Re_slashContext ctx);
+
+	/**
+	 * Enter a parse tree produced by the {@code abs_db_slash}
+	 * labeled alternative in {@link XPathParser#abs_path}.
+	 * @param ctx the parse tree
+	 */
+	void enterAbs_db_slash(@NotNull XPathParser.Abs_db_slashContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code abs_db_slash}
+	 * labeled alternative in {@link XPathParser#abs_path}.
+	 * @param ctx the parse tree
+	 */
+	void exitAbs_db_slash(@NotNull XPathParser.Abs_db_slashContext ctx);
+
+	/**
+	 * Enter a parse tree produced by the {@code double_dot}
+	 * labeled alternative in {@link XPathParser#re_path}.
+	 * @param ctx the parse tree
+	 */
+	void enterDouble_dot(@NotNull XPathParser.Double_dotContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code double_dot}
+	 * labeled alternative in {@link XPathParser#re_path}.
+	 * @param ctx the parse tree
+	 */
+	void exitDouble_dot(@NotNull XPathParser.Double_dotContext ctx);
+
+	/**
+	 * Enter a parse tree produced by the {@code re_db_slash}
+	 * labeled alternative in {@link XPathParser#re_path}.
+	 * @param ctx the parse tree
+	 */
+	void enterRe_db_slash(@NotNull XPathParser.Re_db_slashContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code re_db_slash}
+	 * labeled alternative in {@link XPathParser#re_path}.
+	 * @param ctx the parse tree
+	 */
+	void exitRe_db_slash(@NotNull XPathParser.Re_db_slashContext ctx);
+
+	/**
+	 * Enter a parse tree produced by the {@code tag}
+	 * labeled alternative in {@link XPathParser#re_path}.
+	 * @param ctx the parse tree
+	 */
+	void enterTag(@NotNull XPathParser.TagContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code tag}
+	 * labeled alternative in {@link XPathParser#re_path}.
+	 * @param ctx the parse tree
+	 */
+	void exitTag(@NotNull XPathParser.TagContext ctx);
+
+	/**
+	 * Enter a parse tree produced by the {@code text}
+	 * labeled alternative in {@link XPathParser#re_path}.
+	 * @param ctx the parse tree
+	 */
+	void enterText(@NotNull XPathParser.TextContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code text}
+	 * labeled alternative in {@link XPathParser#re_path}.
+	 * @param ctx the parse tree
+	 */
+	void exitText(@NotNull XPathParser.TextContext ctx);
+
 	/**
 	 * Enter a parse tree produced by the {@code filter_or}
 	 * labeled alternative in {@link XPathParser#filter}.
 	 * @param ctx the parse tree
 	 */
-	void enterFilter_or(XPathParser.Filter_orContext ctx);
+	void enterFilter_or(@NotNull XPathParser.Filter_orContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code filter_or}
 	 * labeled alternative in {@link XPathParser#filter}.
 	 * @param ctx the parse tree
 	 */
-	void exitFilter_or(XPathParser.Filter_orContext ctx);
+	void exitFilter_or(@NotNull XPathParser.Filter_orContext ctx);
+
 	/**
 	 * Enter a parse tree produced by the {@code filter_not}
 	 * labeled alternative in {@link XPathParser#filter}.
 	 * @param ctx the parse tree
 	 */
-	void enterFilter_not(XPathParser.Filter_notContext ctx);
+	void enterFilter_not(@NotNull XPathParser.Filter_notContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code filter_not}
 	 * labeled alternative in {@link XPathParser#filter}.
 	 * @param ctx the parse tree
 	 */
-	void exitFilter_not(XPathParser.Filter_notContext ctx);
+	void exitFilter_not(@NotNull XPathParser.Filter_notContext ctx);
 }
