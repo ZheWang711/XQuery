@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+//ParseTreeProperty
 
 /**
  * Created by zhewang711 on 1/31/17.
@@ -39,8 +40,9 @@ public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
         dbFactory.setIgnoringElementContentWhitespace(true);
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document doc = dBuilder.parse(fXmlFile);
-        doc.getDocumentElement().normalize();
-        return doc.getDocumentElement();
+        doc.normalize();
+        //doc.getDocumentElement().normalize();
+        return (Node) doc;
 
     }
 
