@@ -20,6 +20,15 @@ public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
 
     private Node n = null; // parameter node
 
+    private ArrayList<Node> all_children(Node root){
+        ArrayList<Node> res = new ArrayList<>();
+        for (int i = 0; i < root.getChildNodes().getLength(); ++i){
+            res.add(root.getChildNodes().item(i));
+            res.addAll(all_children(root.getChildNodes().item(i)));
+        }
+        return res;
+    }
+
     /* Java XML Reference: http://tutorials.jenkov.com/java-xml/dom.html */
     // shift tab -- adjust space
     // control alt o -- optimizing import
@@ -55,7 +64,6 @@ public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        n = null;
         return res;
     }
 
@@ -86,10 +94,8 @@ public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
         ArrayList<Object> X = visit(ctx.re_path().get(0));
         HashSet<Object> hs = new HashSet<>();
         for (Object x : X) {
-            Node tmp = n;
             n = (Node) x;
-            res.add(visit(ctx.re_path().get(1)));
-            n = tmp; // back track, illuminate side effect
+            res.addAll(visit(ctx.re_path().get(1)));
         }
         return unique(res);
     }
@@ -104,20 +110,18 @@ public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
 
     @Override
     public ArrayList<Object> visitRe_db_slash(XPathParser.Re_db_slashContext ctx){
-        Node tmp = n;
         ArrayList<Object> res = new ArrayList<>();
-
         if (!n.hasChildNodes()){
             return res;
         }
-
         ArrayList<Object> children = visit(ctx.re_path().get(0));
 
         for (Object child : children){
-            n = (Node) child;
-            res.addAll(visit(ctx.re_path().get(1)));
+            for (Node node : all_children((Node) child)){
+                n = node;
+                res.addAll(visit(ctx.re_path().get(1)));
+            }
         }
-        n = tmp;
         return res;
     }
 

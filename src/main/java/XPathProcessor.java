@@ -16,7 +16,9 @@ public class XPathProcessor {
     public static void main(String[] args) {
 
         try {
-            ANTLRInputStream input = new ANTLRInputStream("doc(\"j_caesar.xml\")/PLAY//P");
+
+            // ok: "doc(\"j_caesar.xml\")/PLAY//P/text()"
+            ANTLRInputStream input = new ANTLRInputStream("doc(\"j_caesar.xml\")/PLAY//FM//text()");
             XPathLexer lexer = new XPathLexer(input);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
 
@@ -25,7 +27,7 @@ public class XPathProcessor {
             ParseTree tree = parser.abs_path();
             EvalVisitor evalVisitor = new EvalVisitor();
 
-            System.out.println(tree.toStringTree(parser));
+            //System.out.println(tree.toStringTree(parser));
 
 //            JFrame frame = new JFrame("Antlr AST");
 //            JPanel panel = new JPanel();
