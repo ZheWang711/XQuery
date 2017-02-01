@@ -76,11 +76,33 @@ public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
             res.add(visit(ctx.re_path().get(1)));
             n = tmp; // back track, illuminate side effect
         }
+        return unique(res);
+    }
 
-        // eliminate duplication
-        hs.addAll(res);
-        res.clear();
+    static private ArrayList<Object> unique(ArrayList<Object> arr){  // eliminate duplication
+        ArrayList<Object> res = new ArrayList<>();
+        HashSet<Object> hs = new HashSet<>();
+        hs.addAll(arr);
         res.addAll(hs);
+        return res;
+    }
+
+    @Override
+    public ArrayList<Object> visitRe_db_slash(XPathParser.Re_db_slashContext ctx){
+        Node tmp = n;
+        ArrayList<Object> res = new ArrayList<>();
+
+        if (!n.hasChildNodes()){
+            return res;
+        }
+
+        ArrayList<Object> children = visit(ctx.re_path().get(0));
+
+        for (Object child : children){
+            n = (Node) child;
+            res.addAll(visit(ctx.re_path().get(1)));
+        }
+        n = tmp;
         return res;
     }
 
