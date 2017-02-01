@@ -5,6 +5,7 @@ import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -23,13 +24,24 @@ public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
     // control alt o -- optimizing import
     // control + delete -- delete a line
     private Node load_doc(String fileName) throws Exception {
-        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder;
-        Document document;
+//        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+//        DocumentBuilder builder;
+//        Document document;
+//
+//        builder = builderFactory.newDocumentBuilder();
+//        document = builder.parse(new FileInputStream(fileName));
+//        Node doc_elem = document.getDocumentElement();
+//        doc_elem.normalize();
+//        return doc_elem;
 
-        builder = builderFactory.newDocumentBuilder();
-        document = builder.parse(new FileInputStream(fileName));
-        return document.getDocumentElement();
+        File fXmlFile = new File(fileName);
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        dbFactory.setIgnoringElementContentWhitespace(true);
+        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        Document doc = dBuilder.parse(fXmlFile);
+        doc.getDocumentElement().normalize();
+        return doc.getDocumentElement();
+
     }
 
     @Override

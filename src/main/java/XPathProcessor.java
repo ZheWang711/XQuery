@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.gui.TreeViewer;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -39,7 +40,12 @@ public class XPathProcessor {
 
 
 
-            evalVisitor.visit(tree);
+            ArrayList<Object> res = evalVisitor.visit(tree);
+            for (Object o : res){
+                System.out.println(o.toString());
+            }
+
+
 
         } catch (Exception e) {
             e.printStackTrace();
