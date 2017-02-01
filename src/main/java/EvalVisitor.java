@@ -1,4 +1,5 @@
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -34,11 +35,10 @@ public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
     @Override
     public ArrayList<Object> visitAbs_slash(XPathParser.Abs_slashContext ctx) {
         ArrayList<Object> res = null;
-        try{
+        try {
             n = load_doc(ctx.FILENAME().getText());
             res = visit(ctx.re_path());
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         n = null;
@@ -50,9 +50,9 @@ public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
         ArrayList<Object> ret = new ArrayList<>();
         NodeList nodeList = n.getChildNodes();
 
-        for(int i = 0, len = nodeList.getLength(); i < len ; i++) {
+        for (int i = 0, len = nodeList.getLength(); i < len; i++) {
             Node cur = nodeList.item(i);
-            if(cur.getNodeType() == Node.TEXT_NODE)
+            if (cur.getNodeType() == Node.TEXT_NODE)
                 ret.add(cur);
         }
 
@@ -65,14 +65,15 @@ public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
         ret.add(n);
         return ret;
     }
+
     @Override
-    public ArrayList<Object> visitRe_slash(XPathParser.Re_slashContext ctx){
+    public ArrayList<Object> visitRe_slash(XPathParser.Re_slashContext ctx) {
         ArrayList<Object> res = new ArrayList<>();
         ArrayList<Object> X = visit(ctx.re_path().get(0));
         HashSet<Object> hs = new HashSet<>();
-        for (Object x : X){
+        for (Object x : X) {
             Node tmp = n;
-            n = (Node)x;
+            n = (Node) x;
             res.add(visit(ctx.re_path().get(1)));
             n = tmp; // back track, illuminate side effect
         }
@@ -90,7 +91,7 @@ public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
         ArrayList<Object> ret = new ArrayList<>();
         Node parent = n.getParentNode();
 
-        if(parent != null) ret.add(parent);
+        if (parent != null) ret.add(parent);
 
         return ret;
     }
@@ -100,8 +101,42 @@ public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
         ArrayList<Object> ret = new ArrayList<>();
         NodeList nodeList = n.getChildNodes();
 
-        for(int i = 0, len = nodeList.getLength(); i < len ; i++)
+        for (int i = 0, len = nodeList.getLength(); i < len; i++)
             ret.add(nodeList.item(i));
+
+        return ret;
+    }
+
+    @Override
+    public ArrayList<Object> visitAtt_name(XPathParser.Att_nameContext ctx) {
+        ArrayList<Object> ret = new ArrayList<>();
+        if (!(n instanceof Element)) return ret;
+
+        String attName = ctx.ATTNAME().getText();
+        NodeList nodeList = n.getChildNodes();
+
+        for (int i = 0, len = nodeList.getLength(); i < len; i++) {
+            Node cur = nodeList.item(i);
+            if (cur.getNodeType() == Node.ATTRIBUTE_NODE && cur.getNodeName().equals(attName)) {
+                ret.add(cur);
+                break;
+            }
+        }
+
+        return ret;
+    }
+
+    @Override
+    public ArrayList<Object> visitTag(XPathParser.TagContext ctx) {
+        ArrayList<Object> ret = new ArrayList<>();
+        String tagName = ctx.TAGNAME().getText();
+
+        NodeList nodeList = n.getChildNodes();
+
+        for (int i = 0, len = nodeList.getLength(); i < len; i++) {
+            Node cur = nodeList.item(i);
+            if (cur.getNodeName().equals(tagName)) ret.add(cur);
+        }
 
         return ret;
     }
