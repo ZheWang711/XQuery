@@ -5,6 +5,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 
 /**
@@ -49,6 +50,25 @@ public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
         return null;
     }
 
+
+    @Override
+    public ArrayList<Object> visitRe_slash(XPathParser.Re_slashContext ctx){
+        ArrayList<Object> res = new ArrayList<>();
+        ArrayList<Object> X = visit(ctx.re_path().get(0));
+        HashSet<Object> hs = new HashSet<>();
+        for (Object x : X){
+            Node tmp = n;
+            n = (Node)x;
+            res.add(visit(ctx.re_path().get(1)));
+            n = tmp; // back track, illuminate side effect
+        }
+
+        // eliminate duplication
+        hs.addAll(res);
+        res.clear();
+        res.addAll(hs);
+        return res;
+    }
 
 
 
