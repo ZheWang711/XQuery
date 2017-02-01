@@ -35,11 +35,11 @@
                 <configuration>
                     <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
                     <outputDirectory>${basedir}/src/main/java</outputDirectory>
-                    <archive>
-                        <manifest>
-                            <addClasspath>false</addClasspath>
-                        </manifest>
-                    </archive>
+                    <!--<archive>-->
+                        <!--<manifest>-->
+                            <!--<addClasspath>false</addClasspath>-->
+                        <!--</manifest>-->
+                    <!--</archive>-->
                 </configuration>
                 <executions>
                     <execution>

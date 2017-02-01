@@ -1,5 +1,6 @@
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -44,15 +45,44 @@ public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
     }
 
     @Override
-    public ArrayList<Object> visitText(XPathParser.TextContext ctx){
-        System.out.println("text visited!");
-        return null;
+    public ArrayList<Object> visitText(XPathParser.TextContext ctx) {
+        ArrayList<Object> ret = new ArrayList<>();
+        NodeList nodeList = n.getChildNodes();
+
+        for(int i = 0, len = nodeList.getLength(); i < len ; i++) {
+            Node cur = nodeList.item(i);
+            if(cur.getNodeType() == Node.TEXT_NODE)
+                ret.add(cur);
+        }
+
+        return ret;
     }
 
+    @Override
+    public ArrayList<Object> visitDot(XPathParser.DotContext ctx) {
+        ArrayList<Object> ret = new ArrayList<>();
+        ret.add(n);
+        return ret;
+    }
 
+    @Override
+    public ArrayList<Object> visitDouble_dot(XPathParser.Double_dotContext ctx) {
+        ArrayList<Object> ret = new ArrayList<>();
+        Node parent = n.getParentNode();
 
+        if(parent != null) ret.add(parent);
 
+        return ret;
+    }
 
+    @Override
+    public ArrayList<Object> visitWildcard(XPathParser.WildcardContext ctx) {
+        ArrayList<Object> ret = new ArrayList<>();
+        NodeList nodeList = n.getChildNodes();
 
+        for(int i = 0, len = nodeList.getLength(); i < len ; i++)
+            ret.add(nodeList.item(i));
 
+        return ret;
+    }
 }
