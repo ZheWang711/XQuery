@@ -226,7 +226,80 @@ public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
         if(!rp.isEmpty()) return ret;
 
         Boolean tmp = false;
-        rp.add(tmp);
+        ret.add(tmp);
+        return ret;
+    }
+
+    public ArrayList<Object> visitValue_eq(XPathParser.Value_eqContext ctx) {
+        ArrayList<Object> ret = new ArrayList<>();
+        ArrayList <Object> rp1 = visit(ctx.re_path().get(0));
+        ArrayList <Object> rp2 = visit(ctx.re_path().get(1));
+
+        for(Object node1 : rp1)
+            for(Object node2 : rp2) {
+                Node left = (Node)node1;
+                Node right = (Node)node2;
+                if(left.isEqualNode(right)) return ret;
+            }
+
+        Boolean tmp = false;
+        ret.add(tmp);
+        return ret;
+    }
+
+    public ArrayList<Object> visitId_eq(XPathParser.Id_eqContext ctx) {
+        ArrayList<Object> ret = new ArrayList<>();
+        ArrayList <Object> rp1 = visit(ctx.re_path().get(0));
+        ArrayList <Object> rp2 = visit(ctx.re_path().get(1));
+
+        for(Object node1 : rp1)
+            for(Object node2 : rp2) {
+                Node left = (Node)node1;
+                Node right = (Node)node2;
+                if(left == right) return ret;
+            }
+
+        Boolean tmp = false;
+        ret.add(tmp);
+        return ret;
+    }
+
+    public ArrayList<Object> visitFilter_eq(XPathParser.Filter_eqContext ctx) {
+        return visit(ctx.filter());
+    }
+
+    public ArrayList<Object> visitFilter_and(XPathParser.Filter_andContext ctx) {
+        ArrayList<Object> ret = new ArrayList<>();
+        ArrayList <Object> rp1 = visit(ctx.filter().get(0));
+        ArrayList <Object> rp2 = visit(ctx.filter().get(1));
+
+        if(rp1.isEmpty() && rp2.isEmpty()) return ret;
+
+        Boolean tmp = false;
+        ret.add(tmp);
+        return ret;
+    }
+
+    public ArrayList<Object> visitFilter_or(XPathParser.Filter_orContext ctx) {
+        ArrayList<Object> ret = new ArrayList<>();
+        ArrayList <Object> rp1 = visit(ctx.filter().get(0));
+        ArrayList <Object> rp2 = visit(ctx.filter().get(1));
+
+        if(rp1.isEmpty() || rp2.isEmpty()) return ret;
+
+        Boolean tmp = false;
+        ret.add(tmp);
+        return ret;
+    }
+
+    public ArrayList<Object> visitFilter_not(XPathParser.Filter_notContext ctx) {
+        ArrayList<Object> ret = new ArrayList<>();
+        ArrayList <Object> rp = visit(ctx.filter());
+
+        if(!rp.isEmpty()) return ret;
+
+        Boolean tmp = false;
+        ret.add(tmp);
         return ret;
     }
 }
