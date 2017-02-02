@@ -34,24 +34,13 @@ public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
     // control alt o -- optimizing import
     // control + delete -- delete a line
     private Node load_doc(String fileName) throws Exception {
-//        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-//        DocumentBuilder builder;
-//        Document document;
-//
-//        builder = builderFactory.newDocumentBuilder();
-//        document = builder.parse(new FileInputStream(fileName));
-//        Node doc_elem = document.getDocumentElement();
-//        doc_elem.normalize();
-//        return doc_elem;
-
         File fXmlFile = new File(fileName);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         dbFactory.setIgnoringElementContentWhitespace(true);
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document doc = dBuilder.parse(fXmlFile);
         doc.normalize();
-        //doc.getDocumentElement().normalize();
-        return (Node) doc;
+        return doc;
 
     }
 
@@ -65,6 +54,20 @@ public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
             e.printStackTrace();
         }
         return res;
+    }
+
+    @Override
+    public ArrayList<Object> visitAbs_db_slash(XPathParser.Abs_db_slashContext ctx){
+        ArrayList<Object> res = new ArrayList<>();
+        NodeList children = n.getChildNodes();
+
+        for (int i = 0; i < children.getLength(); ++i){
+            for (Node node : all_children(children.item(i))){
+                n = node.getParentNode();
+                res.addAll(visit(ctx.re_path()));
+            }
+        }
+        return unique(res);
     }
 
     @Override
@@ -111,9 +114,6 @@ public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
     @Override
     public ArrayList<Object> visitRe_db_slash(XPathParser.Re_db_slashContext ctx){
         ArrayList<Object> res = new ArrayList<>();
-        if (!n.hasChildNodes()){
-            return res;
-        }
         ArrayList<Object> children = visit(ctx.re_path().get(0));
 
         for (Object child : children){

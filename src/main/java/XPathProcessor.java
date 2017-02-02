@@ -18,7 +18,7 @@ public class XPathProcessor {
         try {
 
             // ok: "doc(\"j_caesar.xml\")/PLAY//P/text()"
-            ANTLRInputStream input = new ANTLRInputStream("doc(\"j_caesar.xml\")/PLAY/*//*//text()");
+            ANTLRInputStream input = new ANTLRInputStream("doc(\"j_caesar.xml\")//text()");
             XPathLexer lexer = new XPathLexer(input);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
 
