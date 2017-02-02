@@ -46,7 +46,7 @@ public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
 
     @Override
     public ArrayList<Object> visitAbs_slash(XPathParser.Abs_slashContext ctx) {
-        ArrayList<Object> res = null;
+        ArrayList<Object> res = new ArrayList<>();
         try {
             n = load_doc(ctx.FILENAME().getText());
             res = visit(ctx.re_path());
@@ -58,6 +58,13 @@ public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
 
     @Override
     public ArrayList<Object> visitAbs_db_slash(XPathParser.Abs_db_slashContext ctx){
+
+        try{
+            n = load_doc(ctx.FILENAME().getText());
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
         ArrayList<Object> res = new ArrayList<>();
         NodeList children = n.getChildNodes();
 
