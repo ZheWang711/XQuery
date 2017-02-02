@@ -6,7 +6,6 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -177,6 +176,21 @@ public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
             Node cur = nodeList.item(i);
             if (cur.getNodeName().equals(tagName)) ret.add(cur);
         }
+
+        return ret;
+    }
+
+    @Override
+    public ArrayList<Object> visitRe_expr(XPathParser.Re_exprContext ctx) {
+        return visit(ctx.re_path());
+    }
+
+    @Override
+    public ArrayList<Object> visitConcatenate(XPathParser.ConcatenateContext ctx) {
+        ArrayList<Object> ret = new ArrayList<>();
+
+        ret.addAll(visit(ctx.re_path().get(0)));
+        ret.addAll(visit(ctx.re_path().get(1)));
 
         return ret;
     }
