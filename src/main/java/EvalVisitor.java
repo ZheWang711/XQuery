@@ -201,4 +201,32 @@ public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
 
         return ret;
     }
+
+    @Override
+    public ArrayList<Object> visitRe_filter(XPathParser.Re_filterContext ctx) {
+        ArrayList<Object> ret = new ArrayList<>();
+        ArrayList <Object> rp = visit(ctx.re_path());
+
+        for(Object node : rp) {
+            Node tmp = n;
+            n = (Node)node;
+            Boolean fResult = visit(ctx.filter()).isEmpty(); // empty means true, not empty means false;
+            if(fResult) ret.add(node);
+            n = tmp;
+        }
+
+        return ret;
+    }
+
+    @Override
+    public ArrayList<Object> visitFilter_re(XPathParser.Filter_reContext ctx) {
+        ArrayList<Object> ret = new ArrayList<>();
+        ArrayList <Object> rp = visit(ctx.re_path());
+
+        if(!rp.isEmpty()) return ret;
+
+        Boolean tmp = false;
+        rp.add(tmp);
+        return ret;
+    }
 }
