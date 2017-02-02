@@ -118,11 +118,11 @@ public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
 
         for (Object child : children){
             for (Node node : all_children((Node) child)){
-                n = node;
+                n = node.getParentNode();
                 res.addAll(visit(ctx.re_path().get(1)));
             }
         }
-        return res;
+        return unique(res);
     }
 
 
