@@ -21,6 +21,7 @@ filter  : re_path # filter_re
         | re_path '=' re_path #value_eq
         | re_path 'eq' re_path #value_eq
         | re_path 'is' re_path #id_eq
+        | re_path '==' re_path #id_eq
         | '(' filter ')' #filter_eq
         | filter 'and' filter #filter_and
         | filter 'or' filter # filter_or
