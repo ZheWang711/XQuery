@@ -10,7 +10,9 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * Created by zhewang711 on 1/31/17.
@@ -21,9 +23,7 @@ public class XPathProcessor {
     public static void main(String[] args) {
 
         try {
-
-            // ok: "doc(\"j_caesar.xml\")/PLAY//P/text()"
-            ANTLRInputStream input = new ANTLRInputStream("doc(\"j_caesar.xml\")//(ACT,PERSONAE)/TITLE");
+            ANTLRInputStream input = new ANTLRInputStream(System.in);
             XPathLexer lexer = new XPathLexer(input);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
 
@@ -32,8 +32,7 @@ public class XPathProcessor {
             ParseTree tree = parser.abs_path();
             EvalVisitor evalVisitor = new EvalVisitor();
 
-            //System.out.println(tree.toStringTree(parser));
-
+              // Print out Parse Tree
 //            JFrame frame = new JFrame("Antlr AST");
 //            JPanel panel = new JPanel();
 //            TreeViewer viewr = new TreeViewer(Arrays.asList(
@@ -52,14 +51,15 @@ public class XPathProcessor {
             File file = new File("result.xml");
             if(!file.exists()) file.createNewFile();
             FileOutputStream fos = new FileOutputStream(file);
-            StreamResult sr = new StreamResult(fos);
+            StreamResult fsr = new StreamResult(fos);
+            StreamResult ssr = new StreamResult(System.out);
 
 
             ArrayList<Object> res = evalVisitor.visit(tree);
             for (Object o : res){
                 Node tmp = (Node) o;
-                t.transform(new DOMSource(tmp), sr);
-                System.out.println(o);
+                t.transform(new DOMSource(tmp), fsr);
+                t.transform(new DOMSource(tmp), ssr);
             }
 
 
