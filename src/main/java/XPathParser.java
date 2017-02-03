@@ -76,6 +76,11 @@ public class XPathParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof XPathListener ) ((XPathListener)listener).exitAbs_slash(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof XPathVisitor ) return ((XPathVisitor<? extends T>)visitor).visitAbs_slash(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 	public static class Abs_db_slashContext extends Abs_pathContext {
 		public TerminalNode DOUBLESLASH() { return getToken(XPathParser.DOUBLESLASH, 0); }
@@ -91,6 +96,11 @@ public class XPathParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof XPathListener ) ((XPathListener)listener).exitAbs_db_slash(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof XPathVisitor ) return ((XPathVisitor<? extends T>)visitor).visitAbs_db_slash(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -163,6 +173,11 @@ public class XPathParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof XPathListener ) ((XPathListener)listener).exitConcatenate(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof XPathVisitor ) return ((XPathVisitor<? extends T>)visitor).visitConcatenate(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 	public static class Double_dotContext extends Re_pathContext {
 		public Double_dotContext(Re_pathContext ctx) { copyFrom(ctx); }
@@ -174,6 +189,11 @@ public class XPathParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof XPathListener ) ((XPathListener)listener).exitDouble_dot(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof XPathVisitor ) return ((XPathVisitor<? extends T>)visitor).visitDouble_dot(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 	public static class DotContext extends Re_pathContext {
 		public DotContext(Re_pathContext ctx) { copyFrom(ctx); }
@@ -184,6 +204,11 @@ public class XPathParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof XPathListener ) ((XPathListener)listener).exitDot(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof XPathVisitor ) return ((XPathVisitor<? extends T>)visitor).visitDot(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	public static class Re_db_slashContext extends Re_pathContext {
@@ -203,6 +228,11 @@ public class XPathParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof XPathListener ) ((XPathListener)listener).exitRe_db_slash(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof XPathVisitor ) return ((XPathVisitor<? extends T>)visitor).visitRe_db_slash(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 	public static class TagContext extends Re_pathContext {
 		public TerminalNode TAGNAME() { return getToken(XPathParser.TAGNAME, 0); }
@@ -215,6 +245,11 @@ public class XPathParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof XPathListener ) ((XPathListener)listener).exitTag(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof XPathVisitor ) return ((XPathVisitor<? extends T>)visitor).visitTag(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 	public static class TextContext extends Re_pathContext {
 		public TextContext(Re_pathContext ctx) { copyFrom(ctx); }
@@ -225,6 +260,11 @@ public class XPathParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof XPathListener ) ((XPathListener)listener).exitText(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof XPathVisitor ) return ((XPathVisitor<? extends T>)visitor).visitText(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	public static class Re_exprContext extends Re_pathContext {
@@ -240,6 +280,11 @@ public class XPathParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof XPathListener ) ((XPathListener)listener).exitRe_expr(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof XPathVisitor ) return ((XPathVisitor<? extends T>)visitor).visitRe_expr(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 	public static class Att_nameContext extends Re_pathContext {
 		public TerminalNode ATTNAME() { return getToken(XPathParser.ATTNAME, 0); }
@@ -251,6 +296,11 @@ public class XPathParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof XPathListener ) ((XPathListener)listener).exitAtt_name(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof XPathVisitor ) return ((XPathVisitor<? extends T>)visitor).visitAtt_name(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	public static class Re_filterContext extends Re_pathContext {
@@ -269,6 +319,11 @@ public class XPathParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof XPathListener ) ((XPathListener)listener).exitRe_filter(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof XPathVisitor ) return ((XPathVisitor<? extends T>)visitor).visitRe_filter(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 	public static class WildcardContext extends Re_pathContext {
 		public WildcardContext(Re_pathContext ctx) { copyFrom(ctx); }
@@ -279,6 +334,11 @@ public class XPathParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof XPathListener ) ((XPathListener)listener).exitWildcard(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof XPathVisitor ) return ((XPathVisitor<? extends T>)visitor).visitWildcard(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	public static class Re_slashContext extends Re_pathContext {
@@ -297,6 +357,11 @@ public class XPathParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof XPathListener ) ((XPathListener)listener).exitRe_slash(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof XPathVisitor ) return ((XPathVisitor<? extends T>)visitor).visitRe_slash(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -482,6 +547,11 @@ public class XPathParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof XPathListener ) ((XPathListener)listener).exitFilter_and(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof XPathVisitor ) return ((XPathVisitor<? extends T>)visitor).visitFilter_and(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 	public static class Filter_eqContext extends FilterContext {
 		public FilterContext filter() {
@@ -495,6 +565,11 @@ public class XPathParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof XPathListener ) ((XPathListener)listener).exitFilter_eq(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof XPathVisitor ) return ((XPathVisitor<? extends T>)visitor).visitFilter_eq(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	public static class Id_eqContext extends FilterContext {
@@ -513,6 +588,11 @@ public class XPathParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof XPathListener ) ((XPathListener)listener).exitId_eq(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof XPathVisitor ) return ((XPathVisitor<? extends T>)visitor).visitId_eq(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 	public static class Value_eqContext extends FilterContext {
 		public Re_pathContext re_path(int i) {
@@ -530,6 +610,11 @@ public class XPathParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof XPathListener ) ((XPathListener)listener).exitValue_eq(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof XPathVisitor ) return ((XPathVisitor<? extends T>)visitor).visitValue_eq(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 	public static class Filter_reContext extends FilterContext {
 		public Re_pathContext re_path() {
@@ -543,6 +628,11 @@ public class XPathParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof XPathListener ) ((XPathListener)listener).exitFilter_re(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof XPathVisitor ) return ((XPathVisitor<? extends T>)visitor).visitFilter_re(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	public static class Filter_orContext extends FilterContext {
@@ -561,6 +651,11 @@ public class XPathParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof XPathListener ) ((XPathListener)listener).exitFilter_or(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof XPathVisitor ) return ((XPathVisitor<? extends T>)visitor).visitFilter_or(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 	public static class Filter_notContext extends FilterContext {
 		public FilterContext filter() {
@@ -574,6 +669,11 @@ public class XPathParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof XPathListener ) ((XPathListener)listener).exitFilter_not(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof XPathVisitor ) return ((XPathVisitor<? extends T>)visitor).visitFilter_not(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
