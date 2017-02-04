@@ -195,8 +195,10 @@ public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
     @Override
     public ArrayList<Object> visitConcatenate(XPathParser.ConcatenateContext ctx) {
         ArrayList<Object> ret = new ArrayList<>();
+        Node tmp = n;
 
         ret.addAll(visit(ctx.re_path().get(0)));
+        n = tmp;
         ret.addAll(visit(ctx.re_path().get(1)));
 
         return ret;
