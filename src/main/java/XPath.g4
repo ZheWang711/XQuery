@@ -43,4 +43,6 @@ NAMSSTART : [a-zA-Z_];
 fragment
 NAMEMIDDLE : [a-zA-Z_0-9-];
 
+WHITESPACE : [ \t\r\n]+ -> skip;
+
 
