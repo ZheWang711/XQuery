@@ -12,7 +12,8 @@ import java.util.HashSet;
 //ParseTreeProperty
 
 /**
- * Created by zhewang711 on 1/31/17.
+ * Created by Zhe Wang on 1/31/17.
+ * Custom Visitor for XPath Queries.
  */
 
 public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
@@ -101,7 +102,7 @@ public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
     public ArrayList<Object> visitRe_slash(XPathParser.Re_slashContext ctx) {
         ArrayList<Object> res = new ArrayList<>();
         ArrayList<Object> X = visit(ctx.re_path().get(0));
-        HashSet<Object> hs = new HashSet<>();
+
         for (Object x : X) {
             n = (Node) x;
             res.addAll(visit(ctx.re_path().get(1)));
@@ -220,6 +221,14 @@ public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
         return ret;
     }
 
+    private ArrayList<Object> returnFalse() {
+        Boolean tmp = false;
+        ArrayList<Object> ret = new ArrayList<>();
+
+        ret.add(tmp);
+        return ret;
+    }
+
     @Override
     public ArrayList<Object> visitFilter_re(XPathParser.Filter_reContext ctx) {
         ArrayList<Object> ret = new ArrayList<>();
@@ -227,11 +236,10 @@ public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
 
         if(!rp.isEmpty()) return ret;
 
-        Boolean tmp = false;
-        ret.add(tmp);
-        return ret;
+        return returnFalse();
     }
 
+    @Override
     public ArrayList<Object> visitValue_eq(XPathParser.Value_eqContext ctx) {
         ArrayList<Object> ret = new ArrayList<>();
         ArrayList <Object> rp1 = visit(ctx.re_path().get(0));
@@ -244,11 +252,10 @@ public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
                 if(left.isEqualNode(right)) return ret;
             }
 
-        Boolean tmp = false;
-        ret.add(tmp);
-        return ret;
+        return returnFalse();
     }
 
+    @Override
     public ArrayList<Object> visitId_eq(XPathParser.Id_eqContext ctx) {
         ArrayList<Object> ret = new ArrayList<>();
         ArrayList <Object> rp1 = visit(ctx.re_path().get(0));
@@ -261,15 +268,15 @@ public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
                 if(left == right) return ret;
             }
 
-        Boolean tmp = false;
-        ret.add(tmp);
-        return ret;
+        return returnFalse();
     }
 
+    @Override
     public ArrayList<Object> visitFilter_eq(XPathParser.Filter_eqContext ctx) {
         return visit(ctx.filter());
     }
 
+    @Override
     public ArrayList<Object> visitFilter_and(XPathParser.Filter_andContext ctx) {
         ArrayList<Object> ret = new ArrayList<>();
         ArrayList <Object> rp1 = visit(ctx.filter().get(0));
@@ -277,11 +284,10 @@ public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
 
         if(rp1.isEmpty() && rp2.isEmpty()) return ret;
 
-        Boolean tmp = false;
-        ret.add(tmp);
-        return ret;
+        return returnFalse();
     }
 
+    @Override
     public ArrayList<Object> visitFilter_or(XPathParser.Filter_orContext ctx) {
         ArrayList<Object> ret = new ArrayList<>();
         ArrayList <Object> rp1 = visit(ctx.filter().get(0));
@@ -289,19 +295,16 @@ public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
 
         if(rp1.isEmpty() || rp2.isEmpty()) return ret;
 
-        Boolean tmp = false;
-        ret.add(tmp);
-        return ret;
+        return returnFalse();
     }
 
+    @Override
     public ArrayList<Object> visitFilter_not(XPathParser.Filter_notContext ctx) {
         ArrayList<Object> ret = new ArrayList<>();
         ArrayList <Object> rp = visit(ctx.filter());
 
         if(!rp.isEmpty()) return ret;
 
-        Boolean tmp = false;
-        ret.add(tmp);
-        return ret;
+        return returnFalse();
     }
 }
