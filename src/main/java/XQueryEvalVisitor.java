@@ -16,8 +16,84 @@ import java.util.HashSet;
 
 public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
     private Node n = null; // parameter node
+    private Document doc = null;
 
+    @Override
+    public ArrayList<Object> visitXq_expr(XQueryParser.Xq_exprContext ctx) {
+        return visit(ctx.xq());
+    }
 
+    @Override
+    public ArrayList<Object> visitXq_abs_path(XQueryParser.Xq_abs_pathContext ctx) {
+        return visit(ctx.abs_path());
+    }
+
+    @Override
+    public ArrayList<Object> visitXq_concatenate(XQueryParser.Xq_concatenateContext ctx) {
+        ArrayList<Object> ret = new ArrayList<>();
+        Node tmp = n;
+
+        ret.addAll(visit(ctx.xq().get(0)));
+        n = tmp;
+        ret.addAll(visit(ctx.xq().get(1)));
+
+        return ret;
+    }
+
+    @Override
+    public ArrayList<Object> visitXq_slash(XQueryParser.Xq_slashContext ctx) {
+        ArrayList<Object> ret = new ArrayList<>();
+        ArrayList<Object> tmp = visit(ctx.xq());
+
+        for (Object x : tmp) {
+            n = (Node) x;
+            ret.addAll(visit(ctx.re_path()));
+        }
+        return unique(ret);
+    }
+
+    @Override
+    public ArrayList<Object> visitXq_db_slash(XQueryParser.Xq_db_slashContext ctx) {
+        ArrayList<Object> ret = new ArrayList<>();
+        ArrayList<Object> children = visit(ctx.xq());
+
+        for (Object child : children){
+            for (Node node : all_children((Node) child)){
+                n = node.getParentNode();
+                ret.addAll(visit(ctx.re_path()));
+            }
+        }
+        return unique(ret);
+    }
+
+    @Override
+    public ArrayList<Object> visitXq_string(XQueryParser.Xq_stringContext ctx) {
+        ArrayList<Object> ret = new ArrayList<>();
+        Node tmp = doc.createTextNode(ctx.STRING_CONST().getText());
+
+        ret.add(tmp);
+        return ret;
+    }
+
+    @Override
+    public ArrayList<Object> visitXq_tag(XQueryParser.Xq_tagContext ctx) {
+        ArrayList<Object> ret = new ArrayList<>();
+        ArrayList<Object> tmp = visit(ctx.xq());
+
+        // check the tag name
+        String tagName = ctx.TAGNAME().get(0).getText();
+        String tagNameEnd = ctx.TAGNAME().get(1).getText();
+        if(!tagName.equals(tagNameEnd)) System.out.format("Tag name mismatch: start with %s, end with %s.", tagName, tagNameEnd);
+
+        Node tmpNode = doc.createElement(tagName);
+        for(Object x : tmp) {
+            Node tmpX = (Node) x;
+            tmpNode.appendChild(tmpX);
+        }
+        ret.add(tmpNode);
+
+        return ret;
+    }
 
     // XPath queries, same as EvalVisitor class
 
@@ -39,10 +115,10 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         dbFactory.setIgnoringElementContentWhitespace(true);
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-        Document doc = dBuilder.parse(fXmlFile);
-        doc.normalize();
-        return doc;
-
+        Document tmpDoc = dBuilder.parse(fXmlFile);
+        tmpDoc.normalize();
+        doc = tmpDoc;
+        return tmpDoc;
     }
 
     @Override

@@ -41,7 +41,6 @@ public class EvalVisitor extends XPathBaseVisitor<ArrayList<Object>> {
         Document doc = dBuilder.parse(fXmlFile);
         doc.normalize();
         return doc;
-
     }
 
     @Override
