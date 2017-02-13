@@ -25,6 +25,54 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
         return context.get(ctx.VAR().getText());
     }
 
+    // param@ level: [0, n-1], call nested_loop(0) outside
+    // return: a list of possible contexts (variable value mapping)
+    private ArrayList<HashMap<String, ArrayList<Object>>> nested_loop(int level, XQueryParser.ForContext ctx){
+
+        if (level == ctx.VAR().size()) { // base case
+            return new ArrayList<>();
+        }
+
+        HashMap<String, ArrayList<Object> >  tmp = new HashMap<>(context); // store the current context into temporary memory
+
+        ArrayList<HashMap<String, ArrayList<Object>>> res = new ArrayList<>();
+        String curr_var = ctx.VAR(level).getText(); // current variable
+        ArrayList<Object> curr_vals = visit(ctx.xq(level));
+        context.put(curr_var, curr_vals); // set the state
+
+        ArrayList<HashMap<String, ArrayList<Object>>> rem_ctxs = nested_loop(level + 1, ctx);
+
+        for (HashMap<String, ArrayList<Object>> rem_ctx : rem_ctxs){
+            for (Object val : curr_vals){
+                HashMap<String, ArrayList<Object>> tmp_ctx = new HashMap<>(rem_ctx);
+                tmp_ctx.put(curr_var, curr_vals);
+                res.add(tmp_ctx);
+            }
+
+        }
+
+        context = tmp; // recover the context
+        return res;
+
+    }
+
+
+    @Override
+    public ArrayList<Object> visitFor(XQueryParser.ForContext ctx){
+        ArrayList<Object> res = new ArrayList<>();
+        ArrayList<HashMap<String, ArrayList<Object>>> contexts = nested_loop(0, ctx);
+        for (HashMap<String, ArrayList<Object>> c: contexts){
+            res.add(c);
+        }
+        return res;
+    }
+
+    // pre-condition --
+//    @Override
+//    public ArrayList<Object> visitXq_flwr(XQueryParser.Xq_flwrContext ctx){
+//
+//    }
+
     @Override
     public ArrayList<Object> visitXq_expr(XQueryParser.Xq_exprContext ctx) {
         return visit(ctx.xq());
