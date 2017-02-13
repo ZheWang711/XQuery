@@ -102,6 +102,32 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
         return ret;
     }
 
+    @Override
+    public ArrayList<Object> visitLet(XQueryParser.LetContext ctx) {
+        int varCount = ctx.VAR().size();
+
+        for(int i = 0; i < varCount; i++) {
+            String varName = ctx.VAR(i).getText();
+            ArrayList<Object> varVal = visit(ctx.xq(i));
+            context.put(varName, varVal);
+        }
+        return new ArrayList<>();
+
+    }
+
+    @Override
+    public ArrayList<Object> visitXq_let(XQueryParser.Xq_letContext ctx) {
+        ArrayList<Object> ret;
+        HashMap<String, ArrayList<Object> > tmpContext = context;
+
+        visit(ctx.let_clause());
+        ret = visit(ctx.xq());
+        context = tmpContext;
+
+        return ret;
+    }
+
+
     // XPath queries, same as EvalVisitor class
 
     private ArrayList<Node> all_children(Node root){

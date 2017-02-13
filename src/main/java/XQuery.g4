@@ -31,7 +31,7 @@ cond : xq '=' xq            #cond_eq
     | xq'is' xq             #cond_is
     | 'empty' '(' xq ')'    #cond_empty
     | 'some' VAR 'in' xq (',' VAR 'in' xq)* 'satisfies' cond    #cond_some
-    | '(' cond ')'          #cond_expr
+    | '(' cond ')'           #cond_expr
     | cond 'and' cond       #cond_and
     | cond 'or' cond        #cond_or
     | 'not' cond            #cond_not
