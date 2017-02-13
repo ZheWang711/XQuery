@@ -7,6 +7,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -17,6 +18,12 @@ import java.util.HashSet;
 public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
     private Node n = null; // parameter node
     private Document doc = null;
+
+    private HashMap<String, ArrayList<Object> > context = new HashMap<>(); // simulate the context on the top of stack
+
+    public ArrayList<Object> visitXq_var(XQueryParser.Xq_varContext ctx){
+        return context.get(ctx.VAR().getText());
+    }
 
     @Override
     public ArrayList<Object> visitXq_expr(XQueryParser.Xq_exprContext ctx) {
