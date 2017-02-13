@@ -118,7 +118,7 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
     @Override
     public ArrayList<Object> visitXq_let(XQueryParser.Xq_letContext ctx) {
         ArrayList<Object> ret;
-        HashMap<String, ArrayList<Object> > tmpContext = context;
+        HashMap<String, ArrayList<Object> > tmpContext = new HashMap<>(context);
 
         visit(ctx.let_clause());
         ret = visit(ctx.xq());
@@ -127,6 +127,47 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
         return ret;
     }
 
+    @Override
+    public ArrayList<Object> visitCond_eq(XQueryParser.Cond_eqContext ctx) {
+        ArrayList<Object> ret = new ArrayList<>();
+        ArrayList <Object> rp1 = visit(ctx.xq().get(0));
+        ArrayList <Object> rp2 = visit(ctx.xq().get(1));
+
+        for(Object node1 : rp1)
+            for(Object node2 : rp2) {
+                Node left = (Node)node1;
+                Node right = (Node)node2;
+                if(left.isEqualNode(right)) return ret;
+            }
+
+        return returnFalse();
+    }
+
+    @Override
+    public ArrayList<Object> visitCond_is(XQueryParser.Cond_isContext ctx) {
+        ArrayList<Object> ret = new ArrayList<>();
+        ArrayList <Object> rp1 = visit(ctx.xq().get(0));
+        ArrayList <Object> rp2 = visit(ctx.xq().get(1));
+
+        for(Object node1 : rp1)
+            for(Object node2 : rp2) {
+                Node left = (Node)node1;
+                Node right = (Node)node2;
+                if(left == right) return ret;
+            }
+
+        return returnFalse();
+    }
+
+    @Override
+    public ArrayList<Object> visitCond_empty(XQueryParser.Cond_emptyContext ctx) {
+        ArrayList<Object> ret = new ArrayList<>();
+        ArrayList <Object> rp = visit(ctx.xq());
+
+        if(!rp.isEmpty()) return ret;
+
+        return returnFalse();
+    }
 
     // XPath queries, same as EvalVisitor class
 
