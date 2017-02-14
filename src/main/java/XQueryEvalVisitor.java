@@ -310,6 +310,9 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
         return returnFalse();
     }
 
+    // Referencing https://examples.javacodegeeks.com/core-java/xml/dom/create-dom-document-from-scratch/
+    // About how to create a scratch element or text node in a document.
+
     private void createTempDocument() {
         try{
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
