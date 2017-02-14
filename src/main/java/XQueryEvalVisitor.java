@@ -75,6 +75,16 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
 //    }
 
     @Override
+    public ArrayList<Object> visitWhere(XQueryParser.WhereContext ctx) {
+        return visit(ctx.cond());
+    }
+
+    @Override
+    public ArrayList<Object> visitReturn(XQueryParser.ReturnContext ctx) {
+        return visit(ctx.xq());
+    }
+
+    @Override
     public ArrayList<Object> visitXq_expr(XQueryParser.Xq_exprContext ctx) {
         return visit(ctx.xq());
     }
