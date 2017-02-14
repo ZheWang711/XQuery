@@ -109,12 +109,9 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
             else{
                 res.addAll(visit(ctx.return_clause()));
             }
-
-
         }
         context = tmp; // restore context
         return res;
-
     }
 
     @Override
@@ -180,7 +177,10 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
         ArrayList<Object> ret = new ArrayList<>();
         if(tmp_doc == null) createTempDocument();
 
-        Node tmp = tmp_doc.createTextNode(ctx.STRING_CONST().getText());
+        String text = ctx.STRING_CONST().getText();
+        int textLen = text.length();
+
+        Node tmp = tmp_doc.createTextNode(text.substring(1, textLen-1));
         ret.add(tmp);
         return ret;
     }
@@ -241,7 +241,8 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
             for(Object node2 : rp2) {
                 Node left = (Node)node1;
                 Node right = (Node)node2;
-                if(left.isEqualNode(right)) return ret;
+                if(left.isEqualNode(right))
+                    return ret;
             }
 
         return returnFalse();

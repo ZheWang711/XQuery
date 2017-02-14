@@ -3,8 +3,8 @@
         <!-- Revised for XML 1.0 conformity 1998.01.27 (thanks to Eve Maler) -->
 
         <!-- <!ENTITY amp "&#38;#38;"> -->
-        <!ELEMENT PLAY     (TITLE*, FM*, PERSONAE*, SCNDESCR*, PLAYSUBT*, INDUCT?,
-                PROLOGUE?, ACT*, EPILOGUE?)>
+        <!ELEMENT PLAY     (TITLE, FM, PERSONAE, SCNDESCR, PLAYSUBT, INDUCT?,
+                PROLOGUE?, ACT+, EPILOGUE?)>
         <!ELEMENT TITLE    (#PCDATA)>
         <!ELEMENT FM       (P+)>
         <!ELEMENT P        (#PCDATA)>
