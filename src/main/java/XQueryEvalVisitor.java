@@ -95,7 +95,7 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
         HashMap<String, ArrayList<Object>> tmp = new HashMap<>(context); //
 
         for (Object loop_ctx : loop_ctxts){
-            context = (HashMap<String, ArrayList<Object>>) loop_ctx; // set context to Cn
+            context.putAll((HashMap<String, ArrayList<Object>>) loop_ctx); // set context to Cn
 
             if (ctx.let_clause() != null){
                 visit(ctx.let_clause()); // set context to Cn+k
@@ -277,6 +277,20 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
     @Override
     public ArrayList<Object> visitCond_expr(XQueryParser.Cond_exprContext ctx) {
         return visit(ctx.cond());
+    }
+
+    @Override
+    public ArrayList<Object> visitCond_some(XQueryParser.Cond_someContext ctx) {
+        HashMap<String, ArrayList<Object> > tmpContext = new HashMap<>(context);
+
+        int varCount = ctx.VAR().size();
+        for(int i = 0; i < varCount; i++)
+            context.put(ctx.VAR().get(i).getText(), visit(ctx.xq().get(i)));
+
+        ArrayList<Object> ret = visit(ctx.cond());
+
+        context = tmpContext;
+        return ret;
     }
 
     @Override

@@ -24,16 +24,12 @@ public class XQueryProcessor {
 
         try {
 
-            String input_xq = "<result>{\n" +
-                    "for $a in doc(\"j_caesar.xml\")//ACT,\n" +
-                    "    $sc in $a//SCENE,\n" +
-                    "    $sp in $sc/SPEECH\n" +
-                    "where $sp/LINE/text() = \"Et tu, Brute! Then fall, Caesar.\"\n" +
-                    "return <who>{$sp/SPEAKER/text()}</who>,\n" +
-                    "       <when>{<act>{$a/TITLE/text()}</act>,\n" +
-                    "             <scene>{$sc/TITLE/text()}</scene>}\n" +
-                    "       </when>\n" +
-                    "}</result>";
+            String input_xq = "for $s in doc(\"j_caesar.xml\")//SPEAKER\n" +
+                    "return <speaks>{<who>{$s/text()}</who>,\n" +
+                    "                for $a in doc(\"j_caesar.xml\")//ACT\n" +
+                    "                where some $s1 in $a//SPEAKER satisfies $s1 eq $s\n" +
+                    "                return <when>{$a/TITLE/text()}</when>}\n" +
+                    "       </speaks>";
             ANTLRInputStream input = new ANTLRInputStream(input_xq);
             XQueryLexer lexer = new XQueryLexer(input);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
