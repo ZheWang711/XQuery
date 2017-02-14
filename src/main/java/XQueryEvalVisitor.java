@@ -26,8 +26,8 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
     }
 
     // param@ level: [0, n-1], call nested_loop(0) outside
-    // return: a list of possible contexts (variable value mapping)
-    private ArrayList<HashMap<String, ArrayList<Object>>> nested_loop(int level, XQueryParser.ForContext ctx){
+    // return: a list of possible contexts (variable value mapping) [{v->Node}]
+    private ArrayList<HashMap<String, Node>> nested_loop(int level, XQueryParser.ForContext ctx){
 
         if (level == ctx.VAR().size()) { // base case
             return new ArrayList<>();
@@ -35,17 +35,17 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
 
         HashMap<String, ArrayList<Object> >  tmp = new HashMap<>(context); // store the current context into temporary memory
 
-        ArrayList<HashMap<String, ArrayList<Object>>> res = new ArrayList<>();
+        ArrayList<HashMap<String, Node>> res = new ArrayList<>();
         String curr_var = ctx.VAR(level).getText(); // current variable
         ArrayList<Object> curr_vals = visit(ctx.xq(level));
         context.put(curr_var, curr_vals); // set the state
 
-        ArrayList<HashMap<String, ArrayList<Object>>> rem_ctxs = nested_loop(level + 1, ctx);
+        ArrayList<HashMap<String, Node>> rem_ctxs = nested_loop(level + 1, ctx);
 
-        for (HashMap<String, ArrayList<Object>> rem_ctx : rem_ctxs){
+        for (HashMap<String, Node> rem_ctx : rem_ctxs){
             for (Object val : curr_vals){
-                HashMap<String, ArrayList<Object>> tmp_ctx = new HashMap<>(rem_ctx);
-                tmp_ctx.put(curr_var, curr_vals);
+                HashMap<String, Node> tmp_ctx = new HashMap<>(rem_ctx);
+                tmp_ctx.put(curr_var, (Node) val);
                 res.add(tmp_ctx);
             }
 
@@ -57,11 +57,12 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
     }
 
 
+    //[{v->Node}]
     @Override
     public ArrayList<Object> visitFor(XQueryParser.ForContext ctx){
         ArrayList<Object> res = new ArrayList<>();
-        ArrayList<HashMap<String, ArrayList<Object>>> contexts = nested_loop(0, ctx);
-        for (HashMap<String, ArrayList<Object>> c: contexts){
+        ArrayList<HashMap<String, Node>> contexts = nested_loop(0, ctx);
+        for (HashMap<String, Node> c: contexts){
             res.add(c);
         }
         return res;
