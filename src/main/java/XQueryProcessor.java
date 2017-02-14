@@ -12,26 +12,27 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 
+
 /**
- * Created by zhewang711 on 1/31/17.
- * Main program for XPath query evaluation
+ * Created by Yuning Hui on 2/13/17.
+ * Main program for XQuery query evaluation
  */
-public class XPathProcessor {
+public class XQueryProcessor {
 
 
     public static void main(String[] args) {
 
         try {
             ANTLRInputStream input = new ANTLRInputStream(System.in);
-            XPathLexer lexer = new XPathLexer(input);
+            XQueryLexer lexer = new XQueryLexer(input);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
 
-            XPathParser parser = new XPathParser(tokens);
+            XQueryParser parser = new XQueryParser(tokens);
             parser.removeErrorListeners();
-            ParseTree tree = parser.abs_path();
-            EvalVisitor evalVisitor = new EvalVisitor();
+            ParseTree tree = parser.xq();
+            XQueryEvalVisitor evalVisitor = new XQueryEvalVisitor();
 
-              // Print out Parse Tree
+            // Print out Parse Tree
 //            JFrame frame = new JFrame("Antlr AST");
 //            JPanel panel = new JPanel();
 //            TreeViewer viewr = new TreeViewer(Arrays.asList(
@@ -47,7 +48,7 @@ public class XPathProcessor {
             t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
             t.setOutputProperty(OutputKeys.INDENT, "yes");
 
-            File file = new File("result.xml");
+            File file = new File("XQuery_result.xml");
             if(!file.exists()) file.createNewFile();
             FileOutputStream fos = new FileOutputStream(file);
             StreamResult fsr = new StreamResult(fos);
@@ -59,6 +60,7 @@ public class XPathProcessor {
                 t.transform(new DOMSource(tmp), fsr);
                 t.transform(new DOMSource(tmp), ssr);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Error: " + e.getMessage());

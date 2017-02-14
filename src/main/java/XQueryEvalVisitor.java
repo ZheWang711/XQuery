@@ -228,6 +228,11 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
         return returnFalse();
     }
 
+    @Override
+    public ArrayList<Object>  visitCond_expr(XQueryParser.Cond_exprContext ctx) {
+        return visit(ctx.cond());
+    }
+
     // XPath queries, same as EvalVisitor class
 
     private ArrayList<Node> all_children(Node root){
