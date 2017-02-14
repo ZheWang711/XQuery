@@ -29,8 +29,19 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
     // return: a list of possible contexts (variable value mapping) [{v->Node}]
     private ArrayList<HashMap<String, Node>> nested_loop(int level, XQueryParser.ForContext ctx){
 
-        if (level == ctx.VAR().size()) { // base case
-            return new ArrayList<>();
+        if (level == ctx.VAR().size() - 1) { // base case, last layer
+            ArrayList<HashMap<String, Node>> res = new ArrayList<>();
+            String curr_var = ctx.VAR(level).getText(); // current variable
+            ArrayList<Object> curr_vals = visit(ctx.xq(level));
+
+            for (Object curr_val : curr_vals){
+                HashMap<String, Node> tmp = new HashMap<>();
+                tmp.put(curr_var, (Node) curr_val);
+                res.add(tmp);
+
+            }
+            return res;
+
         }
 
         HashMap<String, ArrayList<Object> >  tmp = new HashMap<>(context); // store the current context into temporary memory
