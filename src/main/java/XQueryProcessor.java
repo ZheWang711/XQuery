@@ -23,7 +23,11 @@ public class XQueryProcessor {
     public static void main(String[] args) {
 
         try {
-            ANTLRInputStream input = new ANTLRInputStream(System.in);
+
+            String input_xq = "for $s in doc(\"j_caesar.xml\")/PLAY/FM/P\n" +
+                    "return <speaks>{$s/text()}\n" +
+                    "      </speaks>";
+            ANTLRInputStream input = new ANTLRInputStream(input_xq);
             XQueryLexer lexer = new XQueryLexer(input);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
 

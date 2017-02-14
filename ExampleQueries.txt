@@ -27,3 +27,9 @@ return <speaks>{<who>{$s/text()}</who>,
                 where some $s1 in $a//SPEAKER satisfies $s1 eq $s
                 return <when>{$a/title/text()}</when>}
        </speaks>
+
+
+
+for $s in doc("j_caesar.xml")/PLAY/FM/P
+return <speaks>{$s/text()}
+      </speaks>
