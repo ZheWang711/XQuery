@@ -57,22 +57,54 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
     }
 
 
-    //[{v->Node}]
+    //[{v->[Node len=1]}]
     @Override
     public ArrayList<Object> visitFor(XQueryParser.ForContext ctx){
         ArrayList<Object> res = new ArrayList<>();
-        ArrayList<HashMap<String, Node>> contexts = nested_loop(0, ctx);
-        for (HashMap<String, Node> c: contexts){
-            res.add(c);
+        //ArrayList<HashMap<String, ArrayList<Object>>> contexts = new ArrayList<>();
+
+        ArrayList<HashMap<String, Node>> loop_contexts = nested_loop(0, ctx);
+
+        for (HashMap<String, Node> loop_context : loop_contexts){
+            HashMap<String, ArrayList<Object>> tmp = new HashMap<>();
+            for (String var : loop_context.keySet()){
+                ArrayList<Object> val = new ArrayList<>(); // value, a list with only 1 object
+                val.add(loop_context.get(var));
+                tmp.put(var, val);
+            }
+            res.add(tmp);
         }
         return res;
     }
 
-    // pre-condition --
-//    @Override
-//    public ArrayList<Object> visitXq_flwr(XQueryParser.Xq_flwrContext ctx){
-//
-//    }
+    @Override
+    public ArrayList<Object> visitXq_flwr(XQueryParser.Xq_flwrContext ctx){
+        ArrayList <Object> res = new ArrayList<>();
+        ArrayList<Object> loop_ctxts = visit(ctx.for_clause());  // [var->[Node len=1]]
+        HashMap<String, ArrayList<Object>> tmp = new HashMap<>(context); //
+
+        for (Object loop_ctx : loop_ctxts){
+            context = (HashMap<String, ArrayList<Object>>) loop_ctx; // set context to Cn
+
+            if (ctx.let_clause() != null){
+                visit(ctx.let_clause()); // set context to Cn+k
+            }
+
+            if (ctx.where_clause() != null){
+                if (visit(ctx.where_clause()).isEmpty()){
+                    res.addAll(visit(ctx.return_clause()));
+                }
+            }
+            else{
+                res.addAll(visit(ctx.return_clause()));
+            }
+
+
+        }
+        context = tmp; // restore context
+        return res;
+
+    }
 
     @Override
     public ArrayList<Object> visitWhere(XQueryParser.WhereContext ctx) {
