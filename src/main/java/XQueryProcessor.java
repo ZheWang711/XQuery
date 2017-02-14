@@ -26,7 +26,7 @@ public class XQueryProcessor {
 
             String input_xq = "for $s in doc(\"j_caesar.xml\")/PLAY/FM/P,\n" +
                     "$t in doc(\"j_caesar.xml\")/PLAY/TITLE\n" +
-                    "return <title>{$s/text()}, <lalala>{$t/text()}</lalala>\n" +
+                    "return <title>{$s/text(), <lalala>{$t/text()}</lalala>}\n" +
                     "      </title>";
             ANTLRInputStream input = new ANTLRInputStream(input_xq);
             XQueryLexer lexer = new XQueryLexer(input);

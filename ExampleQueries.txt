@@ -31,7 +31,7 @@ return <speaks>{<who>{$s/text()}</who>,
 
 for $s in doc("j_caesar.xml")/PLAY/FM/P,
 $t in doc("j_caesar.xml")/PLAY/TITLE
-return <title>{$s/text()}, <lalala>{$t/text()}</lalala>
+return <title>{$s/text(), <lalala>{$t/text()}</lalala>}
       </title>
 
 

@@ -17,7 +17,7 @@ import java.util.HashSet;
 
 public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
     private Node n = null; // parameter node
-    private Document doc = null;
+    private Document tmp_doc = null;
 
     private HashMap<String, ArrayList<Object> > context = new HashMap<>(); // simulate the context on the top of stack
 
@@ -178,8 +178,9 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
     @Override
     public ArrayList<Object> visitXq_string(XQueryParser.Xq_stringContext ctx) {
         ArrayList<Object> ret = new ArrayList<>();
-        Node tmp = doc.createTextNode(ctx.STRING_CONST().getText());
+        if(tmp_doc == null) createTempDocument();
 
+        Node tmp = tmp_doc.createTextNode(ctx.STRING_CONST().getText());
         ret.add(tmp);
         return ret;
     }
@@ -194,9 +195,11 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
         String tagNameEnd = ctx.TAGNAME().get(1).getText();
         if(!tagName.equals(tagNameEnd)) System.out.format("Tag name mismatch: start with %s, end with %s.", tagName, tagNameEnd);
 
-        Node tmpNode = doc.createElement(tagName);
+        if(tmp_doc == null) createTempDocument();
+        Node tmpNode = tmp_doc.createElement(tagName);
         for(Object x : tmp) {
             Node tmpX = (Node) x;
+            tmpX = tmp_doc.importNode(tmpX,true);
             tmpNode.appendChild(tmpX);
         }
         ret.add(tmpNode);
@@ -307,6 +310,16 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
         return returnFalse();
     }
 
+    private void createTempDocument() {
+        try{
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = dbf.newDocumentBuilder();
+            tmp_doc = builder.newDocument();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     // XPath queries, same as EvalVisitor class
 
     private ArrayList<Node> all_children(Node root){
@@ -329,7 +342,6 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document tmpDoc = dBuilder.parse(fXmlFile);
         tmpDoc.normalize();
-        doc = tmpDoc;
         return tmpDoc;
     }
 
