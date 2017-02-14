@@ -171,7 +171,6 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
             context.put(varName, varVal);
         }
         return new ArrayList<>();
-
     }
 
     @Override
@@ -229,8 +228,40 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
     }
 
     @Override
-    public ArrayList<Object>  visitCond_expr(XQueryParser.Cond_exprContext ctx) {
+    public ArrayList<Object> visitCond_expr(XQueryParser.Cond_exprContext ctx) {
         return visit(ctx.cond());
+    }
+
+    @Override
+    public ArrayList<Object> visitCond_and(XQueryParser.Cond_andContext ctx) {
+        ArrayList<Object> ret = new ArrayList<>();
+        ArrayList <Object> rp1 = visit(ctx.cond().get(0));
+        ArrayList <Object> rp2 = visit(ctx.cond().get(1));
+
+        if(rp1.isEmpty() && rp2.isEmpty()) return ret;
+
+        return returnFalse();
+    }
+
+    @Override
+    public ArrayList<Object> visitCond_or(XQueryParser.Cond_orContext ctx) {
+        ArrayList<Object> ret = new ArrayList<>();
+        ArrayList <Object> rp1 = visit(ctx.cond().get(0));
+        ArrayList <Object> rp2 = visit(ctx.cond().get(1));
+
+        if(rp1.isEmpty() || rp2.isEmpty()) return ret;
+
+        return returnFalse();
+    }
+
+    @Override
+    public ArrayList<Object> visitCond_not(XQueryParser.Cond_notContext ctx) {
+        ArrayList<Object> ret = new ArrayList<>();
+        ArrayList <Object> rp = visit(ctx.cond());
+
+        if(!rp.isEmpty()) return ret;
+
+        return returnFalse();
     }
 
     // XPath queries, same as EvalVisitor class
@@ -522,6 +553,4 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
 
         return returnFalse();
     }
-
-
 }
