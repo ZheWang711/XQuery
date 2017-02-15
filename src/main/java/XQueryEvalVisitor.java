@@ -49,20 +49,25 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
         ArrayList<HashMap<String, Node>> res = new ArrayList<>();
         String curr_var = ctx.VAR(level).getText(); // current variable
         ArrayList<Object> curr_vals = visit(ctx.xq(level));
-        context.put(curr_var, curr_vals); // set the state
 
-        ArrayList<HashMap<String, Node>> rem_ctxs = nested_loop(level + 1, ctx);
+        for (Object curr_val : curr_vals){
+            ArrayList<Object> curr_cal_arr = new ArrayList<>();
+            curr_cal_arr.add(curr_val);
+            context.put(curr_var, curr_cal_arr); // set the state
 
-        for (HashMap<String, Node> rem_ctx : rem_ctxs){
-            for (Object val : curr_vals){
+            ArrayList<HashMap<String, Node>> rem_ctxs = nested_loop(level + 1, ctx);
+
+            for (HashMap<String, Node> rem_ctx : rem_ctxs){
                 HashMap<String, Node> tmp_ctx = new HashMap<>(rem_ctx);
-                tmp_ctx.put(curr_var, (Node) val);
+                tmp_ctx.put(curr_var, (Node) curr_val);
                 res.add(tmp_ctx);
-            }
 
+            }
+            context = tmp; // recover the context
         }
 
-        context = tmp; // recover the context
+
+
         return res;
 
     }
