@@ -23,7 +23,23 @@ public class XQueryProcessor {
     public static void main(String[] args) {
 
         try {
-            ANTLRInputStream input = new ANTLRInputStream(System.in);
+
+            String input_xq = "for $b in doc(\"test.xml\")//book,\n" +
+                    "    $bt in $b/title/text(),\n" +
+                    "    $by in $b/year/text(),\n" +
+                    "    \n" +
+                    "    $r in doc(\"test_review.xml\")//entry,\n" +
+                    "    $rt in $r/title/text(),\n" +
+                    "    $ry in $r/year/text()\n" +
+                    "    \n" +
+                    "where $rt=$bt and $ry=$by\n" +
+                    "\n" +
+                    "return\n" +
+                    "    <reviewed_book>{\n" +
+                    "        <title>{$bt}</title>,\n" +
+                    "        <price>{$r/price/text()}</price>\n" +
+                    "    }</reviewed_book>";
+            ANTLRInputStream input = new ANTLRInputStream(input_xq);
             XQueryLexer lexer = new XQueryLexer(input);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
 

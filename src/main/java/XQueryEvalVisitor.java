@@ -17,7 +17,7 @@ import java.util.HashSet;
 
 public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
     private Node n = null; // parameter node
-    private Document doc = null;
+    private Document tmp_doc = null;
 
     private HashMap<String, ArrayList<Object> > context = new HashMap<>(); // simulate the context on the top of stack
 
@@ -29,8 +29,19 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
     // return: a list of possible contexts (variable value mapping) [{v->Node}]
     private ArrayList<HashMap<String, Node>> nested_loop(int level, XQueryParser.ForContext ctx){
 
-        if (level == ctx.VAR().size()) { // base case
-            return new ArrayList<>();
+        if (level == ctx.VAR().size() - 1) { // base case, last layer
+            ArrayList<HashMap<String, Node>> res = new ArrayList<>();
+            String curr_var = ctx.VAR(level).getText(); // current variable
+            ArrayList<Object> curr_vals = visit(ctx.xq(level));
+
+            for (Object curr_val : curr_vals){
+                HashMap<String, Node> tmp = new HashMap<>();
+                tmp.put(curr_var, (Node) curr_val);
+                res.add(tmp);
+
+            }
+            return res;
+
         }
 
         HashMap<String, ArrayList<Object> >  tmp = new HashMap<>(context); // store the current context into temporary memory
@@ -38,20 +49,25 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
         ArrayList<HashMap<String, Node>> res = new ArrayList<>();
         String curr_var = ctx.VAR(level).getText(); // current variable
         ArrayList<Object> curr_vals = visit(ctx.xq(level));
-        context.put(curr_var, curr_vals); // set the state
 
-        ArrayList<HashMap<String, Node>> rem_ctxs = nested_loop(level + 1, ctx);
+        for (Object curr_val : curr_vals){
+            ArrayList<Object> curr_cal_arr = new ArrayList<>();
+            curr_cal_arr.add(curr_val);
+            context.put(curr_var, curr_cal_arr); // set the state
 
-        for (HashMap<String, Node> rem_ctx : rem_ctxs){
-            for (Object val : curr_vals){
+            ArrayList<HashMap<String, Node>> rem_ctxs = nested_loop(level + 1, ctx);
+
+            for (HashMap<String, Node> rem_ctx : rem_ctxs){
                 HashMap<String, Node> tmp_ctx = new HashMap<>(rem_ctx);
-                tmp_ctx.put(curr_var, (Node) val);
+                tmp_ctx.put(curr_var, (Node) curr_val);
                 res.add(tmp_ctx);
-            }
 
+            }
+            context = tmp; // recover the context
         }
 
-        context = tmp; // recover the context
+
+
         return res;
 
     }
@@ -84,7 +100,7 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
         HashMap<String, ArrayList<Object>> tmp = new HashMap<>(context); //
 
         for (Object loop_ctx : loop_ctxts){
-            context = (HashMap<String, ArrayList<Object>>) loop_ctx; // set context to Cn
+            context.putAll((HashMap<String, ArrayList<Object>>) loop_ctx); // set context to Cn
 
             if (ctx.let_clause() != null){
                 visit(ctx.let_clause()); // set context to Cn+k
@@ -98,12 +114,9 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
             else{
                 res.addAll(visit(ctx.return_clause()));
             }
-
-
         }
         context = tmp; // restore context
         return res;
-
     }
 
     @Override
@@ -167,8 +180,12 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
     @Override
     public ArrayList<Object> visitXq_string(XQueryParser.Xq_stringContext ctx) {
         ArrayList<Object> ret = new ArrayList<>();
-        Node tmp = doc.createTextNode(ctx.STRING_CONST().getText());
+        if(tmp_doc == null) createTempDocument();
 
+        String text = ctx.STRING_CONST().getText();
+        int textLen = text.length();
+
+        Node tmp = tmp_doc.createTextNode(text.substring(1, textLen-1));
         ret.add(tmp);
         return ret;
     }
@@ -183,9 +200,11 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
         String tagNameEnd = ctx.TAGNAME().get(1).getText();
         if(!tagName.equals(tagNameEnd)) System.out.format("Tag name mismatch: start with %s, end with %s.", tagName, tagNameEnd);
 
-        Node tmpNode = doc.createElement(tagName);
+        if(tmp_doc == null) createTempDocument();
+        Node tmpNode = tmp_doc.createElement(tagName);
         for(Object x : tmp) {
             Node tmpX = (Node) x;
+            tmpX = tmp_doc.importNode(tmpX,true);
             tmpNode.appendChild(tmpX);
         }
         ret.add(tmpNode);
@@ -227,7 +246,8 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
             for(Object node2 : rp2) {
                 Node left = (Node)node1;
                 Node right = (Node)node2;
-                if(left.isEqualNode(right)) return ret;
+                if(left.isEqualNode(right))
+                    return ret;
             }
 
         return returnFalse();
@@ -265,6 +285,20 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
     }
 
     @Override
+    public ArrayList<Object> visitCond_some(XQueryParser.Cond_someContext ctx) {
+        HashMap<String, ArrayList<Object> > tmpContext = new HashMap<>(context);
+
+        int varCount = ctx.VAR().size();
+        for(int i = 0; i < varCount; i++)
+            context.put(ctx.VAR().get(i).getText(), visit(ctx.xq().get(i)));
+
+        ArrayList<Object> ret = visit(ctx.cond());
+
+        context = tmpContext;
+        return ret;
+    }
+
+    @Override
     public ArrayList<Object> visitCond_and(XQueryParser.Cond_andContext ctx) {
         ArrayList<Object> ret = new ArrayList<>();
         ArrayList <Object> rp1 = visit(ctx.cond().get(0));
@@ -296,6 +330,19 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
         return returnFalse();
     }
 
+    // Referencing https://examples.javacodegeeks.com/core-java/xml/dom/create-dom-document-from-scratch/
+    // About how to create a scratch element or text node in a document.
+
+    private void createTempDocument() {
+        try{
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = dbf.newDocumentBuilder();
+            tmp_doc = builder.newDocument();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     // XPath queries, same as EvalVisitor class
 
     private ArrayList<Node> all_children(Node root){
@@ -318,7 +365,6 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document tmpDoc = dBuilder.parse(fXmlFile);
         tmpDoc.normalize();
-        doc = tmpDoc;
         return tmpDoc;
     }
 

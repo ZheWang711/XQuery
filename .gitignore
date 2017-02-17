@@ -24,3 +24,5 @@ my-*
 
 # build targets
 target
+XQuery_result.xml
+result.xml
