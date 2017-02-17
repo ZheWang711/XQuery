@@ -64,3 +64,18 @@ return <speaks>{$s/text()}
   }
 </results>
 
+for $b in doc("test.xml")//book,
+    $bt in $b/title/text(),
+    $by in $b/year/text(),
+
+    $r in doc("test_review.xml")//entry,
+    $rt in $r/title/text(),
+    $ry in $r/year/text()
+
+where $rt=$bt and $ry=$by
+
+return
+    <reviewed_book>{
+        <title>{$bt}</title>,
+        <price>{$r/price/text()}</price>
+    }</reviewed_book>
