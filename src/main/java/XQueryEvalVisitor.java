@@ -274,7 +274,7 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
         ArrayList<Object> ret = new ArrayList<>();
         ArrayList <Object> rp = visit(ctx.xq());
 
-        if(!rp.isEmpty()) return ret;
+        if(rp.isEmpty()) return ret;
 
         return returnFalse();
     }

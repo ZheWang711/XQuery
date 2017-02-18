@@ -24,18 +24,7 @@ public class XQueryProcessor {
 
         try {
 
-            String input_xq = "<results>\n" +
-                    "  {\n" +
-                    "    for $b in doc(\"test.xml\")/bib/book,\n" +
-                    "        $t in $b/title,\n" +
-                    "        $a in $b/author\n" +
-                    "    return\n" +
-                    "        <result>\n" +
-                    "            { $t, $a }\n" +
-                    "        </result>\n" +
-                    "  }\n" +
-                    "</results>";
-            ANTLRInputStream input = new ANTLRInputStream(input_xq);
+            ANTLRInputStream input = new ANTLRInputStream(System.in);
             XQueryLexer lexer = new XQueryLexer(input);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
 
@@ -43,18 +32,6 @@ public class XQueryProcessor {
             parser.removeErrorListeners();
             ParseTree tree = parser.xq();
             XQueryEvalVisitor evalVisitor = new XQueryEvalVisitor();
-
-            // Print out Parse Tree
-//            JFrame frame = new JFrame("Antlr AST");
-//            JPanel panel = new JPanel();
-//            TreeViewer viewr = new TreeViewer(Arrays.asList(
-//                    parser.getRuleNames()),tree);
-//            viewr.setScale(1.5);//scale a little
-//            panel.add(viewr);
-//            frame.add(panel);
-//            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//            frame.setSize(200,200);
-//            frame.setVisible(true);
 
             Transformer t = TransformerFactory.newInstance().newTransformer();
             t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
