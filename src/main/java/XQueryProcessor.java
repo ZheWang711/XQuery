@@ -24,22 +24,7 @@ public class XQueryProcessor {
 
         try {
 
-            String input_xq = "for $b in doc(\"test.xml\")//book,\n" +
-                    "    $bt in $b/title/text(),\n" +
-                    "    $by in $b/year/text(),\n" +
-                    "    \n" +
-                    "    $r in doc(\"test_review.xml\")//entry,\n" +
-                    "    $rt in $r/title/text(),\n" +
-                    "    $ry in $r/year/text()\n" +
-                    "    \n" +
-                    "where $rt=$bt and $ry=$by\n" +
-                    "\n" +
-                    "return\n" +
-                    "    <reviewed_book>{\n" +
-                    "        <title>{$bt}</title>,\n" +
-                    "        <price>{$r/price/text()}</price>\n" +
-                    "    }</reviewed_book>";
-            ANTLRInputStream input = new ANTLRInputStream(input_xq);
+            ANTLRInputStream input = new ANTLRInputStream(System.in);
             XQueryLexer lexer = new XQueryLexer(input);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
 
@@ -47,18 +32,6 @@ public class XQueryProcessor {
             parser.removeErrorListeners();
             ParseTree tree = parser.xq();
             XQueryEvalVisitor evalVisitor = new XQueryEvalVisitor();
-
-            // Print out Parse Tree
-//            JFrame frame = new JFrame("Antlr AST");
-//            JPanel panel = new JPanel();
-//            TreeViewer viewr = new TreeViewer(Arrays.asList(
-//                    parser.getRuleNames()),tree);
-//            viewr.setScale(1.5);//scale a little
-//            panel.add(viewr);
-//            frame.add(panel);
-//            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//            frame.setSize(200,200);
-//            frame.setVisible(true);
 
             Transformer t = TransformerFactory.newInstance().newTransformer();
             t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
