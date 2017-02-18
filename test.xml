@@ -2,21 +2,24 @@
 <!DOCTYPE bib SYSTEM "test.dtd">
 
 <bib>
-    <book year="1994">
+    <book>
+        <year>1994</year>
         <title>TCP/IP Illustrated</title>
         <author><last>Stevens</last><first>W.</first></author>
         <publisher>Addison-Wesley</publisher>
         <price>65.95</price>
     </book>
 
-    <book year="1992">
+    <book>
+        <year>1992</year>
         <title>Advanced Programming in the Unix environment</title>
         <author><last>Stevens</last><first>W.</first></author>
         <publisher>Addison-Wesley</publisher>
         <price>65.95</price>
     </book>
 
-    <book year="2000">
+    <book>
+        <year>2000</year>
         <title>Data on the Web</title>
         <author><last>Abiteboul</last><first>Serge</first></author>
         <author><last>Buneman</last><first>Peter</first></author>
@@ -25,7 +28,8 @@
         <price>39.95</price>
     </book>
 
-    <book year="1999">
+    <book>
+        <year>1999</year>
         <title>The Economics of Technology and Content for Digital TV</title>
         <editor>
             <last>Gerbarg</last><first>Darcy</first>
