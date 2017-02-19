@@ -19,11 +19,12 @@ public class XPathParser extends Parser {
 		T__18=1, T__17=2, T__16=3, T__15=4, T__14=5, T__13=6, T__12=7, T__11=8, 
 		T__10=9, T__9=10, T__8=11, T__7=12, T__6=13, T__5=14, T__4=15, T__3=16, 
 		T__2=17, T__1=18, T__0=19, SLASH=20, DOUBLESLASH=21, TAGNAME=22, ATTNAME=23, 
-		FILENAME=24;
+		FILENAME=24, WHITESPACE=25;
 	public static final String[] tokenNames = {
 		"<INVALID>", "'doc(\"'", "'text()'", "'['", "'=='", "'..'", "'='", "']'", 
 		"'or'", "'@'", "'\")'", "'eq'", "'('", "'is'", "')'", "'and'", "'*'", 
-		"'not'", "','", "'.'", "'/'", "'//'", "TAGNAME", "ATTNAME", "FILENAME"
+		"'not'", "','", "'.'", "'/'", "'//'", "TAGNAME", "ATTNAME", "FILENAME", 
+		"WHITESPACE"
 	};
 	public static final int
 		RULE_abs_path = 0, RULE_re_path = 1, RULE_filter = 2;
@@ -851,7 +852,7 @@ public class XPathParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\32[\4\2\t\2\4\3\t"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\33[\4\2\t\2\4\3\t"+
 		"\3\4\4\t\4\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\5\2\23\n\2\3\3\3\3"+
 		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3!\n\3\3\3\3\3\3\3\3\3\3\3"+
 		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\7\3\61\n\3\f\3\16\3\64\13\3\3\4\3"+

@@ -8,3 +8,74 @@ XPath Expression #4
 doc("j_caesar.xml")//ACT[(./TITLE)==(./TITLE)]/*/SPEECH/../TITLE
 XPath Expression #5
 doc("j_caesar.xml")//ACT[not(./TITLE)==(./TITLE)]/*/SPEECH/../TITLE
+
+
+<result>{
+          for $a in doc("j_caesar.xml")//ACT,
+              $sc in $a//SCENE,
+              $sp in $sc/SPEECH
+          where $sp/LINE/text() = "Et tu, Brute! Then fall, Caesar."
+          return <who>{$sp/SPEAKER/text()}</who>,
+                 <when>{<act>{$a/TITLE/text()}</act>,
+                       <scene>{$sc/TITLE/text()}</scene>}
+                 </when>
+          }</result>
+
+for $s in doc("j_caesar.xml")//SPEAKER
+return <speaks>{<who>{$s/text()}</who>,
+                for $a in doc("j_caesar.xml")//ACT
+                where some $s1 in $a//SPEAKER satisfies $s1 eq $s
+                return <when>{$a/TITLE/text()}</when>}
+       </speaks>
+
+
+for $s in doc("j_caesar.xml")/PLAY/FM/P,
+$t in doc("j_caesar.xml")/PLAY/TITLE
+return <title>{$s/text(), <lalala>{$t/text()}</lalala>}
+      </title>
+
+
+for $s in doc("j_caesar.xml")/PLAY/FM/P
+return <speaks>{$s/text()}
+      </speaks>
+
+----------
+
+<bib>
+ {
+  for $b in doc("test.xml")/bib/book
+  where $b/publisher = "Addison-Wesley"
+  return
+    <book>
+     { $b/title }
+    </book>
+ }
+</bib>
+
+<results>
+  {
+    for $b in doc("test.xml")/bib/book,
+        $t in $b/title,
+        $a in $b/author
+    return
+        <result>
+            { $t, $a }
+        </result>
+  }
+</results>
+
+for $b in doc("test.xml")//book,
+    $bt in $b/title/text(),
+    $by in $b/year/text(),
+
+    $r in doc("test_review.xml")//entry,
+    $rt in $r/title/text(),
+    $ry in $r/year/text()
+
+where $rt=$bt and $ry=$by
+
+return
+    <reviewed_book>{
+        <title>{$bt}</title>,
+        <price>{$r/price/text()}</price>
+    }</reviewed_book>
