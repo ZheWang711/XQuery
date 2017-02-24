@@ -21,7 +21,9 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
 
     private HashMap<String, ArrayList<Object> > context = new HashMap<>(); // simulate the context on the top of stack
 
-    public ArrayList<Object> visitXq_var(XQueryParser.Xq_varContext ctx){
+    public ArrayList<Object> visitXq_var(XQueryParser.Xq_varContext ctx) {
+        ArrayList<Object> ret = context.get(ctx.VAR().getText());
+        if(ret == null) return new ArrayList<Object>();
         return context.get(ctx.VAR().getText());
     }
 
@@ -241,6 +243,7 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
         ArrayList<Object> ret = new ArrayList<>();
         ArrayList <Object> rp1 = visit(ctx.xq().get(0));
         ArrayList <Object> rp2 = visit(ctx.xq().get(1));
+
 
         for(Object node1 : rp1)
             for(Object node2 : rp2) {
