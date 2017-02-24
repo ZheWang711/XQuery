@@ -21,7 +21,9 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
 
     private HashMap<String, ArrayList<Object> > context = new HashMap<>(); // simulate the context on the top of stack
 
-    public ArrayList<Object> visitXq_var(XQueryParser.Xq_varContext ctx){
+    public ArrayList<Object> visitXq_var(XQueryParser.Xq_varContext ctx) {
+        ArrayList<Object> ret = context.get(ctx.VAR().getText());
+        if(ret == null) return new ArrayList<Object>();
         return context.get(ctx.VAR().getText());
     }
 
@@ -38,10 +40,9 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
                 HashMap<String, Node> tmp = new HashMap<>();
                 tmp.put(curr_var, (Node) curr_val);
                 res.add(tmp);
-
             }
-            return res;
 
+            return res;
         }
 
         HashMap<String, ArrayList<Object> >  tmp = new HashMap<>(context); // store the current context into temporary memory
@@ -66,19 +67,13 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
             context = tmp; // recover the context
         }
 
-
-
         return res;
-
     }
-
 
     //[{v->[Node len=1]}]
     @Override
     public ArrayList<Object> visitFor(XQueryParser.ForContext ctx){
         ArrayList<Object> res = new ArrayList<>();
-        //ArrayList<HashMap<String, ArrayList<Object>>> contexts = new ArrayList<>();
-
         ArrayList<HashMap<String, Node>> loop_contexts = nested_loop(0, ctx);
 
         for (HashMap<String, Node> loop_context : loop_contexts){
@@ -289,8 +284,10 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
         HashMap<String, ArrayList<Object> > tmpContext = new HashMap<>(context);
 
         int varCount = ctx.VAR().size();
-        for(int i = 0; i < varCount; i++)
-            context.put(ctx.VAR().get(i).getText(), visit(ctx.xq().get(i)));
+        for(int i = 0; i < varCount; i++) {
+            ArrayList<Object> res = visit(ctx.xq().get(i));
+            context.put(ctx.VAR().get(i).getText(), res);
+        }
 
         ArrayList<Object> ret = visit(ctx.cond());
 
