@@ -40,10 +40,9 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
                 HashMap<String, Node> tmp = new HashMap<>();
                 tmp.put(curr_var, (Node) curr_val);
                 res.add(tmp);
-
             }
-            return res;
 
+            return res;
         }
 
         HashMap<String, ArrayList<Object> >  tmp = new HashMap<>(context); // store the current context into temporary memory
@@ -68,19 +67,13 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
             context = tmp; // recover the context
         }
 
-
-
         return res;
-
     }
-
 
     //[{v->[Node len=1]}]
     @Override
     public ArrayList<Object> visitFor(XQueryParser.ForContext ctx){
         ArrayList<Object> res = new ArrayList<>();
-        //ArrayList<HashMap<String, ArrayList<Object>>> contexts = new ArrayList<>();
-
         ArrayList<HashMap<String, Node>> loop_contexts = nested_loop(0, ctx);
 
         for (HashMap<String, Node> loop_context : loop_contexts){
@@ -243,7 +236,6 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
         ArrayList<Object> ret = new ArrayList<>();
         ArrayList <Object> rp1 = visit(ctx.xq().get(0));
         ArrayList <Object> rp2 = visit(ctx.xq().get(1));
-
 
         for(Object node1 : rp1)
             for(Object node2 : rp2) {
