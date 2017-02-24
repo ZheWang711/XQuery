@@ -292,8 +292,10 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
         HashMap<String, ArrayList<Object> > tmpContext = new HashMap<>(context);
 
         int varCount = ctx.VAR().size();
-        for(int i = 0; i < varCount; i++)
-            context.put(ctx.VAR().get(i).getText(), visit(ctx.xq().get(i)));
+        for(int i = 0; i < varCount; i++) {
+            ArrayList<Object> res = visit(ctx.xq().get(i));
+            context.put(ctx.VAR().get(i).getText(), res);
+        }
 
         ArrayList<Object> ret = visit(ctx.cond());
 
