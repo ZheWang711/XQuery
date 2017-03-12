@@ -11,6 +11,7 @@ xq : VAR                #xq_var
     | '<' TAGNAME '>' '{' xq '}' '<' '/' TAGNAME '>'        #xq_tag
     | for_clause let_clause? where_clause? return_clause    #xq_flwr
     | let_clause xq     #xq_let
+    | join_clause       #xq_join
     ;
 
 for_clause : 'for' VAR 'in' xq (',' VAR 'in' xq)*       #for
@@ -35,6 +36,12 @@ cond : xq '=' xq            #cond_eq
     | cond 'and' cond       #cond_and
     | cond 'or' cond        #cond_or
     | 'not' cond            #cond_not
+    ;
+
+join_clause : 'join' '(' xq ',' xq ',' attr ',' attr ')'
+    ;
+
+attr : '[' NAME (',' NAME)* ']'
     ;
 
 VAR : '$' NAME;

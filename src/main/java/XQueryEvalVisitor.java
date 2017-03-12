@@ -1,3 +1,4 @@
+import org.antlr.v4.runtime.misc.NotNull;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -90,7 +91,7 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
 
     @Override
     public ArrayList<Object> visitXq_flwr(XQueryParser.Xq_flwrContext ctx){
-        ArrayList <Object> res = new ArrayList<>();
+        ArrayList<Object> res = new ArrayList<>();
         ArrayList<Object> loop_ctxts = visit(ctx.for_clause());  // [var->[Node len=1]]
         HashMap<String, ArrayList<Object>> tmp = new HashMap<>(context); //
 
@@ -234,8 +235,8 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
     @Override
     public ArrayList<Object> visitCond_eq(XQueryParser.Cond_eqContext ctx) {
         ArrayList<Object> ret = new ArrayList<>();
-        ArrayList <Object> rp1 = visit(ctx.xq().get(0));
-        ArrayList <Object> rp2 = visit(ctx.xq().get(1));
+        ArrayList<Object> rp1 = visit(ctx.xq().get(0));
+        ArrayList<Object> rp2 = visit(ctx.xq().get(1));
 
         for(Object node1 : rp1)
             for(Object node2 : rp2) {
@@ -251,8 +252,8 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
     @Override
     public ArrayList<Object> visitCond_is(XQueryParser.Cond_isContext ctx) {
         ArrayList<Object> ret = new ArrayList<>();
-        ArrayList <Object> rp1 = visit(ctx.xq().get(0));
-        ArrayList <Object> rp2 = visit(ctx.xq().get(1));
+        ArrayList<Object> rp1 = visit(ctx.xq().get(0));
+        ArrayList<Object> rp2 = visit(ctx.xq().get(1));
 
         for(Object node1 : rp1)
             for(Object node2 : rp2) {
@@ -267,7 +268,7 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
     @Override
     public ArrayList<Object> visitCond_empty(XQueryParser.Cond_emptyContext ctx) {
         ArrayList<Object> ret = new ArrayList<>();
-        ArrayList <Object> rp = visit(ctx.xq());
+        ArrayList<Object> rp = visit(ctx.xq());
 
         if(rp.isEmpty()) return ret;
 
@@ -298,8 +299,8 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
     @Override
     public ArrayList<Object> visitCond_and(XQueryParser.Cond_andContext ctx) {
         ArrayList<Object> ret = new ArrayList<>();
-        ArrayList <Object> rp1 = visit(ctx.cond().get(0));
-        ArrayList <Object> rp2 = visit(ctx.cond().get(1));
+        ArrayList<Object> rp1 = visit(ctx.cond().get(0));
+        ArrayList<Object> rp2 = visit(ctx.cond().get(1));
 
         if(rp1.isEmpty() && rp2.isEmpty()) return ret;
 
@@ -309,8 +310,8 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
     @Override
     public ArrayList<Object> visitCond_or(XQueryParser.Cond_orContext ctx) {
         ArrayList<Object> ret = new ArrayList<>();
-        ArrayList <Object> rp1 = visit(ctx.cond().get(0));
-        ArrayList <Object> rp2 = visit(ctx.cond().get(1));
+        ArrayList<Object> rp1 = visit(ctx.cond().get(0));
+        ArrayList<Object> rp2 = visit(ctx.cond().get(1));
 
         if(rp1.isEmpty() || rp2.isEmpty()) return ret;
 
@@ -320,7 +321,7 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
     @Override
     public ArrayList<Object> visitCond_not(XQueryParser.Cond_notContext ctx) {
         ArrayList<Object> ret = new ArrayList<>();
-        ArrayList <Object> rp = visit(ctx.cond());
+        ArrayList<Object> rp = visit(ctx.cond());
 
         if(!rp.isEmpty()) return ret;
 
@@ -529,7 +530,7 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
     @Override
     public ArrayList<Object> visitRe_filter(XQueryParser.Re_filterContext ctx) {
         ArrayList<Object> ret = new ArrayList<>();
-        ArrayList <Object> rp = visit(ctx.re_path());
+        ArrayList<Object> rp = visit(ctx.re_path());
 
         for(Object node : rp) {
             Node tmp = n;
@@ -553,7 +554,7 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
     @Override
     public ArrayList<Object> visitFilter_re(XQueryParser.Filter_reContext ctx) {
         ArrayList<Object> ret = new ArrayList<>();
-        ArrayList <Object> rp = visit(ctx.re_path());
+        ArrayList<Object> rp = visit(ctx.re_path());
 
         if(!rp.isEmpty()) return ret;
 
@@ -563,8 +564,8 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
     @Override
     public ArrayList<Object> visitValue_eq(XQueryParser.Value_eqContext ctx) {
         ArrayList<Object> ret = new ArrayList<>();
-        ArrayList <Object> rp1 = visit(ctx.re_path().get(0));
-        ArrayList <Object> rp2 = visit(ctx.re_path().get(1));
+        ArrayList<Object> rp1 = visit(ctx.re_path().get(0));
+        ArrayList<Object> rp2 = visit(ctx.re_path().get(1));
 
         for(Object node1 : rp1)
             for(Object node2 : rp2) {
@@ -579,8 +580,8 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
     @Override
     public ArrayList<Object> visitId_eq(XQueryParser.Id_eqContext ctx) {
         ArrayList<Object> ret = new ArrayList<>();
-        ArrayList <Object> rp1 = visit(ctx.re_path().get(0));
-        ArrayList <Object> rp2 = visit(ctx.re_path().get(1));
+        ArrayList<Object> rp1 = visit(ctx.re_path().get(0));
+        ArrayList<Object> rp2 = visit(ctx.re_path().get(1));
 
         for(Object node1 : rp1)
             for(Object node2 : rp2) {
@@ -600,8 +601,8 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
     @Override
     public ArrayList<Object> visitFilter_and(XQueryParser.Filter_andContext ctx) {
         ArrayList<Object> ret = new ArrayList<>();
-        ArrayList <Object> rp1 = visit(ctx.filter().get(0));
-        ArrayList <Object> rp2 = visit(ctx.filter().get(1));
+        ArrayList<Object> rp1 = visit(ctx.filter().get(0));
+        ArrayList<Object> rp2 = visit(ctx.filter().get(1));
 
         if(rp1.isEmpty() && rp2.isEmpty()) return ret;
 
@@ -611,8 +612,8 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
     @Override
     public ArrayList<Object> visitFilter_or(XQueryParser.Filter_orContext ctx) {
         ArrayList<Object> ret = new ArrayList<>();
-        ArrayList <Object> rp1 = visit(ctx.filter().get(0));
-        ArrayList <Object> rp2 = visit(ctx.filter().get(1));
+        ArrayList<Object> rp1 = visit(ctx.filter().get(0));
+        ArrayList<Object> rp2 = visit(ctx.filter().get(1));
 
         if(rp1.isEmpty() || rp2.isEmpty()) return ret;
 
@@ -622,10 +623,20 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
     @Override
     public ArrayList<Object> visitFilter_not(XQueryParser.Filter_notContext ctx) {
         ArrayList<Object> ret = new ArrayList<>();
-        ArrayList <Object> rp = visit(ctx.filter());
+        ArrayList<Object> rp = visit(ctx.filter());
 
         if(!rp.isEmpty()) return ret;
 
         return returnFalse();
     }
+
+    @Override
+    public ArrayList<Object> visitXq_join(@NotNull XQueryParser.Xq_joinContext ctx) {
+        ArrayList<Object> ret = new ArrayList<>();
+        ArrayList<Object> rp1 = visit(ctx.join_clause().xq().get(0));
+        ArrayList<Object> rp2 = visit(ctx.join_clause().xq().get(1));
+
+        return ret;
+    }
+
 }

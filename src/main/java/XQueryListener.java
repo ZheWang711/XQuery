@@ -268,6 +268,19 @@ public interface XQueryListener extends ParseTreeListener {
 	void exitWhere(@NotNull XQueryParser.WhereContext ctx);
 
 	/**
+	 * Enter a parse tree produced by the {@code xq_join}
+	 * labeled alternative in {@link XQueryParser#xq}.
+	 * @param ctx the parse tree
+	 */
+	void enterXq_join(@NotNull XQueryParser.Xq_joinContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code xq_join}
+	 * labeled alternative in {@link XQueryParser#xq}.
+	 * @param ctx the parse tree
+	 */
+	void exitXq_join(@NotNull XQueryParser.Xq_joinContext ctx);
+
+	/**
 	 * Enter a parse tree produced by the {@code tag}
 	 * labeled alternative in {@link XQueryParser#re_path}.
 	 * @param ctx the parse tree
@@ -292,6 +305,17 @@ public interface XQueryListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitText(@NotNull XQueryParser.TextContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link XQueryParser#attr}.
+	 * @param ctx the parse tree
+	 */
+	void enterAttr(@NotNull XQueryParser.AttrContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link XQueryParser#attr}.
+	 * @param ctx the parse tree
+	 */
+	void exitAttr(@NotNull XQueryParser.AttrContext ctx);
 
 	/**
 	 * Enter a parse tree produced by the {@code filter_and}
@@ -435,6 +459,17 @@ public interface XQueryListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitDouble_dot(@NotNull XQueryParser.Double_dotContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link XQueryParser#join_clause}.
+	 * @param ctx the parse tree
+	 */
+	void enterJoin_clause(@NotNull XQueryParser.Join_clauseContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link XQueryParser#join_clause}.
+	 * @param ctx the parse tree
+	 */
+	void exitJoin_clause(@NotNull XQueryParser.Join_clauseContext ctx);
 
 	/**
 	 * Enter a parse tree produced by the {@code re_db_slash}

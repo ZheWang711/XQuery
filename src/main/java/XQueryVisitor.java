@@ -171,6 +171,14 @@ public interface XQueryVisitor<T> extends ParseTreeVisitor<T> {
 	T visitWhere(@NotNull XQueryParser.WhereContext ctx);
 
 	/**
+	 * Visit a parse tree produced by the {@code xq_join}
+	 * labeled alternative in {@link XQueryParser#xq}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitXq_join(@NotNull XQueryParser.Xq_joinContext ctx);
+
+	/**
 	 * Visit a parse tree produced by the {@code tag}
 	 * labeled alternative in {@link XQueryParser#re_path}.
 	 * @param ctx the parse tree
@@ -185,6 +193,13 @@ public interface XQueryVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitText(@NotNull XQueryParser.TextContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link XQueryParser#attr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAttr(@NotNull XQueryParser.AttrContext ctx);
 
 	/**
 	 * Visit a parse tree produced by the {@code filter_and}
@@ -273,6 +288,13 @@ public interface XQueryVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitDouble_dot(@NotNull XQueryParser.Double_dotContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link XQueryParser#join_clause}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitJoin_clause(@NotNull XQueryParser.Join_clauseContext ctx);
 
 	/**
 	 * Visit a parse tree produced by the {@code re_db_slash}
