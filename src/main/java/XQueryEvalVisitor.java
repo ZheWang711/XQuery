@@ -1,4 +1,3 @@
-import org.antlr.v4.runtime.misc.NotNull;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -631,12 +630,55 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
     }
 
     @Override
-    public ArrayList<Object> visitXq_join(@NotNull XQueryParser.Xq_joinContext ctx) {
+    public ArrayList<Object> visitXq_join(XQueryParser.Xq_joinContext ctx) {
         ArrayList<Object> ret = new ArrayList<>();
         ArrayList<Object> rp1 = visit(ctx.join_clause().xq().get(0));
         ArrayList<Object> rp2 = visit(ctx.join_clause().xq().get(1));
+        HashMap<ArrayList<String>, ArrayList<Object>> resultMap = new HashMap<>();
+
+        int varSize = ctx.join_clause().attr(0).TAGNAME().size();
+
+        for(Object o : rp1) {
+            Node node = (Node) o;
+            ArrayList<String> valueList = new ArrayList<>();
+            for(int i = 0; i < varSize; i++) {
+                String varName = ctx.join_clause().attr(0).TAGNAME(i).getText();
+                String varValue = ((Element)node).getElementsByTagName(varName).item(0).getTextContent();
+                valueList.add(varValue);
+            }
+
+            ArrayList<Object> tmpNodeList;
+            if(resultMap.containsKey(valueList))
+                tmpNodeList = resultMap.get(valueList);
+            else
+                tmpNodeList = new ArrayList<>();
+
+            tmpNodeList.add(node.cloneNode(true));
+            resultMap.put(valueList, tmpNodeList);
+        }
+
+        for(Object o : rp2) {
+            Node node = (Node) o;
+            ArrayList<String> valueList = new ArrayList<>();
+            for(int i = 0; i < varSize; i++) {
+                String varName = ctx.join_clause().attr(1).TAGNAME(i).getText();
+                String varValue = ((Element)node).getElementsByTagName(varName).item(0).getTextContent();
+                valueList.add(varValue);
+            }
+            ArrayList<Object> tmpNodeList = resultMap.get(valueList);
+            if(tmpNodeList != null) {
+                for(Object oo : tmpNodeList) {
+                    Node tmpNode = (Node) oo;
+                    Node newNode = tmpNode.cloneNode(true);
+                    NodeList nodesAdd = node.getChildNodes();
+                    int nodesAddSize = nodesAdd.getLength();
+                    for(int i = 0; i < nodesAddSize; i++)
+                        newNode.appendChild(nodesAdd.item(i).cloneNode(true));
+                    ret.add(newNode);
+                }
+            }
+        }
 
         return ret;
     }
-
 }

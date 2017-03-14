@@ -41,7 +41,7 @@ cond : xq '=' xq            #cond_eq
 join_clause : 'join' '(' xq ',' xq ',' attr ',' attr ')'
     ;
 
-attr : '[' NAME (',' NAME)* ']'
+attr : '[' TAGNAME (',' TAGNAME)* ']'
     ;
 
 VAR : '$' NAME;

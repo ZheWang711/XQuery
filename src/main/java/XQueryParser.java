@@ -21,14 +21,14 @@ public class XQueryParser extends Parser {
 		T__16=17, T__15=18, T__14=19, T__13=20, T__12=21, T__11=22, T__10=23, 
 		T__9=24, T__8=25, T__7=26, T__6=27, T__5=28, T__4=29, T__3=30, T__2=31, 
 		T__1=32, T__0=33, VAR=34, STRING_CONST=35, SLASH=36, DOUBLESLASH=37, TAGNAME=38, 
-		ATTNAME=39, FILENAME=40, WHITESPACE=41, NAME=42;
+		ATTNAME=39, FILENAME=40, WHITESPACE=41;
 	public static final String[] tokenNames = {
 		"<INVALID>", "'some'", "'text()'", "'return'", "'{'", "'..'", "'='", "'}'", 
 		"'for'", "':='", "'\")'", "'satisfies'", "'eq'", "'('", "'is'", "'*'", 
 		"','", "'.'", "'join'", "'doc(\"'", "'['", "'=='", "'<'", "']'", "'>'", 
 		"'@'", "'or'", "'where'", "'let'", "'in'", "')'", "'and'", "'not'", "'empty'", 
 		"VAR", "STRING_CONST", "'/'", "'//'", "TAGNAME", "ATTNAME", "FILENAME", 
-		"WHITESPACE", "NAME"
+		"WHITESPACE"
 	};
 	public static final int
 		RULE_xq = 0, RULE_for_clause = 1, RULE_let_clause = 2, RULE_where_clause = 3, 
@@ -1168,10 +1168,10 @@ public class XQueryParser extends Parser {
 	}
 
 	public static class AttrContext extends ParserRuleContext {
-		public TerminalNode NAME(int i) {
-			return getToken(XQueryParser.NAME, i);
+		public List<TerminalNode> TAGNAME() { return getTokens(XQueryParser.TAGNAME); }
+		public TerminalNode TAGNAME(int i) {
+			return getToken(XQueryParser.TAGNAME, i);
 		}
-		public List<TerminalNode> NAME() { return getTokens(XQueryParser.NAME); }
 		public AttrContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1199,7 +1199,7 @@ public class XQueryParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(170); match(T__13);
-			setState(171); match(NAME);
+			setState(171); match(TAGNAME);
 			setState(176);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -1207,7 +1207,7 @@ public class XQueryParser extends Parser {
 				{
 				{
 				setState(172); match(T__17);
-				setState(173); match(NAME);
+				setState(173); match(TAGNAME);
 				}
 				}
 				setState(178);
@@ -2051,7 +2051,7 @@ public class XQueryParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3,\u010a\4\2\t\2\4"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3+\u010a\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3"+
 		"\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\5\2\61\n\2\3\2\5\2\64\n\2\3\2\3"+
@@ -2106,7 +2106,7 @@ public class XQueryParser extends Parser {
 		"\2\u00a3\u00a4\5\2\2\2\u00a4\u00a5\7\22\2\2\u00a5\u00a6\5\2\2\2\u00a6"+
 		"\u00a7\7\22\2\2\u00a7\u00a8\5\20\t\2\u00a8\u00a9\7\22\2\2\u00a9\u00aa"+
 		"\5\20\t\2\u00aa\u00ab\7 \2\2\u00ab\17\3\2\2\2\u00ac\u00ad\7\26\2\2\u00ad"+
-		"\u00b2\7,\2\2\u00ae\u00af\7\22\2\2\u00af\u00b1\7,\2\2\u00b0\u00ae\3\2"+
+		"\u00b2\7(\2\2\u00ae\u00af\7\22\2\2\u00af\u00b1\7(\2\2\u00b0\u00ae\3\2"+
 		"\2\2\u00b1\u00b4\3\2\2\2\u00b2\u00b0\3\2\2\2\u00b2\u00b3\3\2\2\2\u00b3"+
 		"\u00b5\3\2\2\2\u00b4\u00b2\3\2\2\2\u00b5\u00b6\7\31\2\2\u00b6\21\3\2\2"+
 		"\2\u00b7\u00b8\7\25\2\2\u00b8\u00b9\7*\2\2\u00b9\u00ba\7\f\2\2\u00ba\u00bb"+

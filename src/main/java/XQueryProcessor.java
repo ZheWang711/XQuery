@@ -24,7 +24,23 @@ public class XQueryProcessor {
 
         try {
 
-            ANTLRInputStream input = new ANTLRInputStream(System.in);
+            String query = "for $tuple in join (for $b in doc(\"test.xml\")//book,\n" +
+                    "                        $tb in $b/title\n" +
+                    "                    return <tuple>{ <b> {$b} </b>, <tb> {$tb} </tb> }</tuple>,\n" +
+                    "\n" +
+                    "                    for $a in doc(\"test_review.xml\")//entry,\n" +
+                    "                        $ta in $a/title\n" +
+                    "                    return <tuple>{ <a> {$a} </a>, <ta> {$ta} </ta> }</tuple>,\n" +
+                    "\n" +
+                    "                    [tb], [ta] )\n" +
+                    "return\n" +
+                    "    <book-with-prices>\n" +
+                    "        { $tuple/tb/*,\n" +
+                    "        <price-review>{ $tuple/a/*/price }</price-review>,\n" +
+                    "        <price>{ $tuple/b/*/price }</price> }\n" +
+                    "    </book-with-prices>";
+
+            ANTLRInputStream input = new ANTLRInputStream(query);
             XQueryLexer lexer = new XQueryLexer(input);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
 
