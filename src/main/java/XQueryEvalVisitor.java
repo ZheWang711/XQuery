@@ -678,7 +678,6 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
                 }
             }
         }
-
         return ret;
     }
 }

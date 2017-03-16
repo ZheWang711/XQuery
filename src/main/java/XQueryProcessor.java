@@ -61,7 +61,6 @@ public class XQueryProcessor {
 
             // rewrite and output the rewritten query to file
             String rewritten = joinRewrite(tree);
-            //System.out.println(rewritten);
             File out_file = new File("XQuery_rewritten.txt");
             if(!out_file.exists()) out_file.createNewFile();
             FileOutputStream out_fos = new FileOutputStream(out_file);
@@ -341,8 +340,6 @@ public class XQueryProcessor {
             ArrayList<String> varList = partition.get(var2Parent);
             for(String var : varList)
                 invPartition.put(var, var1Parent);
-
-            //System.out.println(joinString);
         }
 
         // construct final query
@@ -377,4 +374,3 @@ public class XQueryProcessor {
         return ret;
     }
 }
-
