@@ -92,7 +92,7 @@ public class XQueryEvalVisitor extends XQueryBaseVisitor<ArrayList<Object>> {
     public ArrayList<Object> visitXq_flwr(XQueryParser.Xq_flwrContext ctx){
         ArrayList<Object> res = new ArrayList<>();
         ArrayList<Object> loop_ctxts = visit(ctx.for_clause());  // [var->[Node len=1]]
-        HashMap<String, ArrayList<Object>> tmp = new HashMap<>(context); //
+        HashMap<String, ArrayList<Object>> tmp = new HashMap<>(context); // backup context
 
         for (Object loop_ctx : loop_ctxts){
             context.putAll((HashMap<String, ArrayList<Object>>) loop_ctx); // set context to Cn

@@ -9,8 +9,10 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -28,10 +30,26 @@ public class XQueryProcessor {
 
         try {
 
-            String query = "for $s in doc(\"j_caesar.xml\")//SPEAKER, $a in doc(\"j_caesar.xml\")//ACT,\n" +
-                    "    $sp in $a//SPEAKER, $stxt in $s/text()\n" +
-                    "where $sp eq $s and $stxt = \"CAESAR\"\n" +
-                    "return <act> { $a/TITLE/text()} </act>";
+            String query = "for $b1 in doc(\"book.xml\")//book,\n" +
+                    "$aj in $b1/author/first/text(),\n" +
+                    "$a1 in $b1/author, \n" +
+                    "$af1 in $a1/first/text(),\n" +
+                    "$al1 in $a1/last/text(),\n" +
+                    "\n" +
+                    "$b2 in doc(\"book.xml\")//book,\n" +
+                    "$a21 in $b2/author,\n" +
+                    "$af21 in $a21/first/text(),\n" +
+                    "$al21 in $a21/last/text(),\n" +
+                    "$a22 in $b2/author,\n" +
+                    "$af22 in $a22/first/text(),\n" +
+                    "$al22 in $a22/last/text(),\n" +
+                    "\n" +
+                    "$b3 in doc(\"book.xml\")//book,\n" +
+                    "$a3 in $b3/author,\n" +
+                    "$af3 in $a3/first/text(),\n" +
+                    "$al3 in $a3/last/text()\n" +
+                    "where $aj eq \"W.\" and $af1 eq $af21 and $al1 eq $al21 and $af22 eq $af3 and $al22 eq $al3\n" +
+                    "return <triplet> { $b1, $b2, $b3} </triplet>\n";
 
             ANTLRInputStream input = new ANTLRInputStream(query);
             XQueryLexer lexer = new XQueryLexer(input);
@@ -40,8 +58,25 @@ public class XQueryProcessor {
             XQueryParser parser = new XQueryParser(tokens);
             parser.removeErrorListeners();
             ParseTree tree = parser.xq();
+
+            // rewrite and output the rewritten query to file
             String rewritten = joinRewrite(tree);
-            System.out.println(rewritten);
+            //System.out.println(rewritten);
+            File out_file = new File("XQuery_rewritten.txt");
+            if(!out_file.exists()) out_file.createNewFile();
+            FileOutputStream out_fos = new FileOutputStream(out_file);
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(out_fos));
+            bw.write(rewritten);
+            bw.close();
+            out_fos.close();
+
+
+            ANTLRInputStream re_input = new ANTLRInputStream(rewritten);
+            XQueryLexer re_lexer = new XQueryLexer(re_input);
+            CommonTokenStream re_tokens = new CommonTokenStream(re_lexer);
+            XQueryParser re_parser = new XQueryParser(re_tokens);
+            re_parser.removeErrorListeners();
+            ParseTree re_tree = re_parser.xq();
             XQueryEvalVisitor evalVisitor = new XQueryEvalVisitor();
 
             Transformer t = TransformerFactory.newInstance().newTransformer();
@@ -54,7 +89,7 @@ public class XQueryProcessor {
             StreamResult fsr = new StreamResult(fos);
             StreamResult ssr = new StreamResult(System.out);
 
-            ArrayList<Object> res = evalVisitor.visit(tree);
+            ArrayList<Object> res = evalVisitor.visit(re_tree);
             for (Object o : res){
                 Node tmp = (Node) o;
                 t.transform(new DOMSource(tmp), fsr);
@@ -212,13 +247,13 @@ public class XQueryProcessor {
                 String var1ParentName = var1Parent.substring(1, var1Parent.length());  // construct where and return
                 if(parWhere.containsKey(var1Parent))
                     var1Join += parWhere.get(var1Parent);
-                var1Join += "return <tuple>\n";
-                var1Join += "          " + '<' + var1ParentName + "> {" + var1Parent + "} </" + var1ParentName + ">\n";
+                var1Join += "return <tuple>{\n";
+                var1Join += "          " + '<' + var1ParentName + "> {" + var1Parent + "} </" + var1ParentName + ">";
                 for(String var : varList) {
                     String varName = var.substring(1, var.length());
-                    var1Join += "          " + '<' + varName + "> {" + var + "} </" + varName + ">\n";
+                    var1Join += ",\n          " + '<' + varName + "> {" + var + "} </" + varName + ">";
                 }
-                var1Join += "       </tuple>";
+                var1Join += "\n       }</tuple>";
             }
 
             // construct 2nd parameter of join
@@ -238,13 +273,13 @@ public class XQueryProcessor {
                 String var2ParentName = var2Parent.substring(1, var2Parent.length());  // construct where and return
                 if(parWhere.containsKey(var2Parent))
                     var2Join += parWhere.get(var2Parent);
-                var2Join += "return <tuple>\n";
-                var2Join += "          " + '<' + var2ParentName + "> {" + var1Parent + "} </" + var2ParentName + ">\n";
+                var2Join += "return <tuple>{\n";
+                var2Join += "          " + '<' + var2ParentName + "> {" + var2Parent + "} </" + var2ParentName + ">";
                 for(String var : varList) {
                     String varName = var.substring(1, var.length());
-                    var2Join += "          " + '<' + varName + "> {" + var + "} </" + varName + ">\n";
+                    var2Join += ",\n          " + '<' + varName + "> {" + var + "} </" + varName + ">";
                 }
-                var2Join += "       </tuple>";
+                var2Join += "\n       }</tuple>";
             }
 
             // construct 3rd and 4th parameter of join
@@ -339,7 +374,7 @@ public class XQueryProcessor {
         ret += "\n" + returnPart;
 
         System.out.println(ret);
-        return "";
+        return ret;
     }
 }
 
