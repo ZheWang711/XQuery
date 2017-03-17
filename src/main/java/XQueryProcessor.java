@@ -30,26 +30,7 @@ public class XQueryProcessor {
 
         try {
 
-            String query = "for $b1 in doc(\"book.xml\")//book,\n" +
-                    "$aj in $b1/author/first/text(),\n" +
-                    "$a1 in $b1/author, \n" +
-                    "$af1 in $a1/first/text(),\n" +
-                    "$al1 in $a1/last/text(),\n" +
-                    "\n" +
-                    "$b2 in doc(\"book.xml\")//book,\n" +
-                    "$a21 in $b2/author,\n" +
-                    "$af21 in $a21/first/text(),\n" +
-                    "$al21 in $a21/last/text(),\n" +
-                    "$a22 in $b2/author,\n" +
-                    "$af22 in $a22/first/text(),\n" +
-                    "$al22 in $a22/last/text(),\n" +
-                    "\n" +
-                    "$b3 in doc(\"book.xml\")//book,\n" +
-                    "$a3 in $b3/author,\n" +
-                    "$af3 in $a3/first/text(),\n" +
-                    "$al3 in $a3/last/text()\n" +
-                    "where $aj eq \"W.\" and $af1 eq $af21 and $al1 eq $al21 and $af22 eq $af3 and $al22 eq $al3\n" +
-                    "return <triplet> { $b1, $b2, $b3} </triplet>\n";
+            String query = "";
 
             ANTLRInputStream input = new ANTLRInputStream(query);
             XQueryLexer lexer = new XQueryLexer(input);
@@ -61,6 +42,7 @@ public class XQueryProcessor {
 
             // rewrite and output the rewritten query to file
             String rewritten = joinRewrite(tree);
+            if(rewritten.equals("")) rewritten = query;
             File out_file = new File("XQuery_rewritten.txt");
             if(!out_file.exists()) out_file.createNewFile();
             FileOutputStream out_fos = new FileOutputStream(out_file);
@@ -147,7 +129,7 @@ public class XQueryProcessor {
     }
 
     private static String joinRewrite(ParseTree xq) {
-        if(!xq.getChild(0).getText().contains("for"))
+        if(!xq.getChild(0).getText().contains("for") || xq.getChild(0).getText().contains("join"))
             return "";
 
         ParseTree forClause = xq.getChild(0);
@@ -182,6 +164,7 @@ public class XQueryProcessor {
         ArrayList<ArrayList<String>> condList = performGetCondList(cond);
 
         HashMap<String, String> parWhere = new HashMap<>();
+        Boolean needRewrite = false;
 
         for(ArrayList<String> condVar : condList) {
             String var1 = condVar.get(0);
@@ -201,7 +184,12 @@ public class XQueryProcessor {
                     parWhere.put(var1Parent, whereVal);
                 }
             }
+            else {
+                needRewrite = true;
+            }
         }
+
+        if(!needRewrite) return "";
 
         Boolean newMerged = true;
         LinkedHashMap<String, String> joinClause = new LinkedHashMap<>();
